@@ -4,18 +4,19 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
 public class ClawCommand extends CommandBase {
-  private XboxController controller;
+  private Joystick controller;
   private Claw subsystem;
   Boolean clawClosed = true;
   boolean aPressed = false;
 
   /** Creates a new Claw. */
-  public ClawCommand(Claw subsystem, XboxController controller) {
+  public ClawCommand(Claw subsystem, Joystick controller) {
     this.subsystem = subsystem;
     this.controller = controller;
     addRequirements(this.subsystem);
@@ -32,7 +33,7 @@ public class ClawCommand extends CommandBase {
   @Override
   public void execute() {
 
-    if (this.controller.getAButton()&&aPressed == false){
+    if (this.controller.getRawButton(1)&&aPressed == false){
       aPressed = true;
       if (clawClosed){
         clawClosed = false;
@@ -40,7 +41,7 @@ public class ClawCommand extends CommandBase {
         clawClosed = true;
       }
     }
-    if (!this.controller.getAButton()){
+    if (!this.controller.getRawButton(1)){
       aPressed = false;
     }
     subsystem.closeClaw (clawClosed);
