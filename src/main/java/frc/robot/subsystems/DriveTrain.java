@@ -15,14 +15,14 @@ public class DriveTrain extends SubsystemBase {
   private TalonFX frontRight = new TalonFX(0);
   private TalonFX backLeft = new TalonFX(0);
   private TalonFX backRight = new TalonFX(0);
-  private static DifferentialDrive drivetrain;
+  private DifferentialDrive drivetrain;
   /** Creates a new DriveTrain. */
   public DriveTrain() {
     MotorControllerGroup left = new MotorControllerGroup(backLeft, frontLeft);
     MotorControllerGroup right = new MotorControllerGroup(backRight, frontRight);
     drivetrain = new DifferentialDrive(left, right);
   }
-  public static void tankdrive(double left, double right){
+  public void tankdrive(double left, double right){
     drivetrain.tankDrive(left, right);
     
   }
