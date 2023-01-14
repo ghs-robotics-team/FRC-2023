@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
@@ -15,7 +14,7 @@ public class Claw extends SubsystemBase {
   /** Creates a new Claw. */
   public Claw() {}
 
-  private void closeClaw(boolean closed){
+  public void closeClaw(boolean closed){
     claw.set(closed);
   }
 
