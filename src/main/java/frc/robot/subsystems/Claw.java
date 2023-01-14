@@ -15,7 +15,7 @@ public class Claw extends SubsystemBase {
   /** Creates a new Claw. */
   public Claw() {}
 
-  private void closeClaw(boolean closed){
+  public void closeClaw(boolean closed){
     claw.set(closed);
   }
 
@@ -23,4 +23,5 @@ public class Claw extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-}
+
+  }

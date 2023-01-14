@@ -4,19 +4,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Claw;
 
-public class TankDrive extends CommandBase {
-  private Joystick leftJoystick;
-    private Joystick rightJoystick;
-    private DriveTrain subsystem;
-  /** Creates a new TankDrive. */
-  public TankDrive(DriveTrain subsystem, Joystick leftJoystick, Joystick rightJoystick) {
+public class ClawCommand extends CommandBase {
+  private XboxController controller;
+  private Claw subsystem;
+  Boolean clawClosed = true;
+
+  /** Creates a new Claw. */
+  public ClawCommand(Claw subsystem, XboxController controller) {
     this.subsystem = subsystem;
-    this.leftJoystick = leftJoystick;
-    this.rightJoystick = rightJoystick;
+    this.controller = controller;
     addRequirements(this.subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -24,19 +24,33 @@ public class TankDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsystem.tankdrive(0,0);
+    subsystem.closeClaw(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.tankdrive(leftJoystick.getRawAxis(0) , rightJoystick.getRawAxis(0));
+    Boolean clawClosed = true;
+    Boolean aPressed = false;
+
+    if (this.controller.getAButton()&&aPressed == false){
+      aPressed = true;
+      if (clawClosed){
+        clawClosed = false;
+      }else{
+        clawClosed = true;
+      }
+    }
+    if (!this.controller.getAButton()){
+      aPressed = false;
+    }
+    subsystem.closeClaw (clawClosed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.tankdrive(0,0);
+    subsystem.closeClaw(false);
   }
 
   // Returns true when the command should end.
