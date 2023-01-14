@@ -4,22 +4,20 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmExtension;
 
-/** An example command that uses an example subsystem. */
-public class ExampleCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+public class ArmExtensionCommand extends CommandBase {
+  /** Creates a new ArmExtension. */
+  private ArmExtension subsystem;
+  private Joystick secondarycontroller;
+  boolean toggle = false;
+  boolean extended = false;
+  public ArmExtensionCommand(ArmExtension subsystem, Joystick secondarycontroller) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.subsystem = subsystem;
+    this.secondarycontroller = secondarycontroller;
     addRequirements(subsystem);
   }
 
@@ -29,7 +27,13 @@ public class ExampleCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (secondarycontroller.getRawButton(4) && !toggle){
+      this.subsystem.extendArm(!extended);
+      extended = !extended;
+    }
+    toggle = secondarycontroller.getRawButton(4);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
