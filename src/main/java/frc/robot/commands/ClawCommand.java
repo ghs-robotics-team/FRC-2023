@@ -12,6 +12,7 @@ public class ClawCommand extends CommandBase {
   private XboxController controller;
   private Claw subsystem;
   Boolean clawClosed = true;
+  boolean aPressed = false;
 
   /** Creates a new Claw. */
   public ClawCommand(Claw subsystem, XboxController controller) {
@@ -31,7 +32,6 @@ public class ClawCommand extends CommandBase {
   @Override
   public void execute() {
     Boolean clawClosed = true;
-    Boolean aPressed = false;
 
     if (this.controller.getAButton()&&aPressed == false){
       aPressed = true;
