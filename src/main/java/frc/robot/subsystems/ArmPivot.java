@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmPivot extends SubsystemBase {
-  private Spark armSpark = new Spark(0);
+  private Spark armSpark = new Spark(4);
   /** Creates a new ArmPivot. */
   public ArmPivot() {
   }

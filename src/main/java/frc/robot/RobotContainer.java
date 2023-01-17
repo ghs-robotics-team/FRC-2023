@@ -71,14 +71,17 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // cancelling on release.
+  }
+
+  public void setup(){
     armExtension.setDefaultCommand(armExtensionCommand);
     armPivot.setDefaultCommand(armPivotCommand);
     claw.setDefaultCommand(clawCommand);
     elevator.setDefaultCommand(elevatorCommand);
     turret.setDefaultCommand(rotateTurret);
     driveTrain.setDefaultCommand(tankDrive);
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
   }
 
   /**

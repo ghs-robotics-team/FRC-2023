@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
-  private Spark elevatorMotor = new Spark(0);
+  private Spark elevatorMotor = new Spark(5);
 
   /** Creates a new Elevator. */
   public Elevator() {

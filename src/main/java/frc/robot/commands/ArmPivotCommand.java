@@ -28,7 +28,7 @@ public class ArmPivotCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.turning(secondarycontroller.getRawAxis(5));
+    subsystem.turning(secondarycontroller.getRawAxis(1));
   }
 
   // Called once the command ends or is interrupted.

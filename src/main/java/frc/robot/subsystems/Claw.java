@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
 
-  private Solenoid claw = new Solenoid(PneumaticsModuleType.REVPH, 0);
+  private Solenoid claw = new Solenoid(PneumaticsModuleType.REVPH, 1);
   /** Creates a new Claw. */
   public Claw() {}
 
