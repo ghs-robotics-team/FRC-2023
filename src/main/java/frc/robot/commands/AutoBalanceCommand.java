@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -13,39 +14,46 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.helper.PID;
+import frc.robot.subsystems.Balance;
 import frc.robot.subsystems.DriveTrain;
 
 public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   AHRS gyro = new AHRS(SPI.Port.kMXP);
-  PID controller = new PID (0,0,0);
   DriveTrain DT = null;
+  Balance balance = null;
   GenericEntry pEntry = Shuffleboard.getTab("AutoMenu").add("p",0).withWidget(BuiltInWidgets.kTextView).getEntry();
   GenericEntry iEntry = Shuffleboard.getTab("AutoMenu").add("i",0).withWidget(BuiltInWidgets.kTextView).getEntry();
   GenericEntry dEntry = Shuffleboard.getTab("AutoMenu").add("d",0).withWidget(BuiltInWidgets.kTextView).getEntry();
-  public AutoBalanceCommand(DriveTrain DT) {
+  boolean calibrated = false;
+  SlewRateLimiter filter = new SlewRateLimiter(0.5);
+  public AutoBalanceCommand(DriveTrain DT, Balance balance ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.DT = DT;
-    addRequirements(DT);
-    gyro.calibrate();
+    this.balance = balance;
+    addRequirements(DT,balance);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    controller.reset();
-    
+    if(!calibrated){
+      balance.reset(); 
+      calibrated = true;
+    }
+    balance.controller.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    controller.kp = pEntry.getDouble(0);
-    controller.ki = iEntry.getDouble(0);
-    controller.kd = dEntry.getDouble(0);
-    float pitch = gyro.getRoll();
+    balance.controller.kp = pEntry.getDouble(0);
+    balance.controller.ki = iEntry.getDouble(0);
+    balance.controller.kd = dEntry.getDouble(0);
+    double pitch = gyro.getRoll() - balance.zero;
     SmartDashboard.putNumber("Pitch", pitch);
-    double speed = Math.max(controller.step(pitch), 0.3);
+    double speed = filter.calculate(Math.min(Math.max(balance.out, -0.3), 0.3));
+    SmartDashboard.putNumber("PID output", speed);
     DT.tankdrive(speed, speed);
   }
 

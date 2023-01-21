@@ -13,6 +13,7 @@ import frc.robot.commands.RotateTurret;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.ArmExtension;
 import frc.robot.subsystems.ArmPivot;
+import frc.robot.subsystems.Balance;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -37,6 +38,7 @@ public class RobotContainer {
   private Claw claw = new Claw();
   private DriveTrain driveTrain = new DriveTrain();
   private Elevator elevator = new Elevator();
+  private Balance balance = new Balance();
   private Turret turret = new Turret();
 
   //Joysticks
@@ -52,7 +54,7 @@ public class RobotContainer {
   private ElevatorCommand elevatorCommand = new ElevatorCommand(elevator, secondarycontroller);
   private RotateTurret rotateTurret = new RotateTurret(turret, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
-  private AutoBalanceCommand autoBalance = new AutoBalanceCommand(driveTrain);
+  private AutoBalanceCommand autoBalance = new AutoBalanceCommand(driveTrain, balance);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
