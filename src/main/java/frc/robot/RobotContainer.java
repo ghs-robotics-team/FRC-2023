@@ -49,7 +49,7 @@ public class RobotContainer {
 
   //Commands
   private ArmExtensionCommand armExtensionCommand = new ArmExtensionCommand(armExtension, secondarycontroller);
-  private ArmPivotCommand armPivotCommand = new ArmPivotCommand(armPivot, secondarycontroller);
+  private ArmPivotCommand armPivotCommand = new ArmPivotCommand(armPivot, secondarycontroller, joystick_right);
   private ClawCommand clawCommand = new ClawCommand(claw, secondarycontroller);
   private ElevatorCommand elevatorCommand = new ElevatorCommand(elevator, secondarycontroller);
   private RotateTurret rotateTurret = new RotateTurret(turret, secondarycontroller);

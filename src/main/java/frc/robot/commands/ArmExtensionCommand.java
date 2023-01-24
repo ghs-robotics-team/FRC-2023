@@ -12,6 +12,7 @@ public class ArmExtensionCommand extends CommandBase {
   /** Creates a new ArmExtension. */
   private ArmExtension subsystem;
   private Joystick secondarycontroller;
+  private double speedMult = 1;
   boolean toggle = false;
   boolean extended = false;
   public ArmExtensionCommand(ArmExtension subsystem, Joystick secondarycontroller) {
@@ -28,6 +29,12 @@ public class ArmExtensionCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (secondarycontroller.getRawButton(7)){
+      speedMult -= 0.001;
+    } 
+    else if (secondarycontroller.getRawButton(8)){
+      speedMult += 0.001;
+    }
     if (secondarycontroller.getRawButton(4) && !toggle){
       this.subsystem.extendArm(!extended);
       extended = !extended;

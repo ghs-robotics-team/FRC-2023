@@ -12,10 +12,13 @@ public class ArmPivotCommand extends CommandBase {
   /** Creates a new ArmPivotCommand. */
   private ArmPivot subsystem;
   private Joystick secondarycontroller;
-  public ArmPivotCommand(ArmPivot subsystem, Joystick secondarycontroller) {
+  private Joystick rightJoystick;
+  private double speedMult = 1;
+  public ArmPivotCommand(ArmPivot subsystem, Joystick secondarycontroller, Joystick rightJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subsystem = subsystem;
     this.secondarycontroller = secondarycontroller;
+    this.rightJoystick = rightJoystick;
     addRequirements(subsystem);
   }
 
@@ -28,7 +31,8 @@ public class ArmPivotCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.turning(secondarycontroller.getRawAxis(1));
+    speedMult = (-rightJoystick.getRawAxis(3) +1)/2;
+    subsystem.turning(secondarycontroller.getRawAxis(1)*speedMult);
   }
 
   // Called once the command ends or is interrupted.

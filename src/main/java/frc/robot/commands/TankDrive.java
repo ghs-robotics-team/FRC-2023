@@ -12,6 +12,7 @@ public class TankDrive extends CommandBase {
   private Joystick leftJoystick;
     private Joystick rightJoystick;
     private DriveTrain subsystem;
+    private double speedMult = 1;
   /** Creates a new TankDrive. */
   public TankDrive(DriveTrain subsystem, Joystick leftJoystick, Joystick rightJoystick) {
     this.subsystem = subsystem;
@@ -30,7 +31,8 @@ public class TankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.tankdrive(leftJoystick.getRawAxis(1)*0.5 , rightJoystick.getRawAxis(1)*0.5);
+    speedMult = (-leftJoystick.getRawAxis(3) +1)/2;
+    subsystem.tankdrive(leftJoystick.getRawAxis(1)*speedMult , rightJoystick.getRawAxis(1)*speedMult);
   }
 
   // Called once the command ends or is interrupted.
