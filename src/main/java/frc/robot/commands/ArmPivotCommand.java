@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmPivot;
@@ -13,6 +14,7 @@ public class ArmPivotCommand extends CommandBase {
   private ArmPivot subsystem;
   private Joystick secondarycontroller;
   private Joystick rightJoystick;
+  private SlewRateLimiter limiter = new SlewRateLimiter(0.5);
   private double speedMult = 1;
   public ArmPivotCommand(ArmPivot subsystem, Joystick secondarycontroller, Joystick rightJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,7 +34,7 @@ public class ArmPivotCommand extends CommandBase {
   @Override
   public void execute() {
     speedMult = (-rightJoystick.getRawAxis(3) +1)/2;
-    subsystem.turning(secondarycontroller.getRawAxis(1)*speedMult);
+    subsystem.turning(limiter.calculate(Math.pow(secondarycontroller.getRawAxis(1),2)*speedMult));
   }
 
   // Called once the command ends or is interrupted.
