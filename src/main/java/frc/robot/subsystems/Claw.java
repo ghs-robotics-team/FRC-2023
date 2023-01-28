@@ -4,19 +4,20 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
 
-  private Solenoid claw = new Solenoid(PneumaticsModuleType.REVPH, 1);
+  private CANSparkMax claw = new CANSparkMax(5,MotorType.kBrushless);
   /** Creates a new Claw. */
   public Claw() {}
 
-  public void closeClaw(boolean closed){
-    claw.set(closed);
-  }
+  public void moveClaw(double speed){
+    claw.set(speed);
+  }   
 
   @Override
   public void periodic() {
