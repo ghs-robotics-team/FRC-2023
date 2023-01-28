@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
@@ -26,31 +25,19 @@ public class ClawCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsystem.closeClaw(true);
+    subsystem.moveClaw(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if (this.controller.getRawButton(1)&&aPressed == false){
-      aPressed = true;
-      if (clawClosed){
-        clawClosed = false;
-      }else{
-        clawClosed = true;
-      }
-    }
-    if (!this.controller.getRawButton(1)){
-      aPressed = false;
-    }
-    subsystem.closeClaw (clawClosed);
+    subsystem.moveClaw(0.1*(controller.getRawAxis(3)-controller.getRawAxis(2)));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.closeClaw(false);
+    subsystem.moveClaw(0);
   }
 
   // Returns true when the command should end.
