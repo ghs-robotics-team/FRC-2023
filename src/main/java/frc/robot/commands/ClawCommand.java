@@ -31,7 +31,7 @@ public class ClawCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.moveClaw(0.1*(controller.getRawAxis(3)-controller.getRawAxis(2)));
+    subsystem.moveClaw(0.155*(controller.getRawAxis(3)-controller.getRawAxis(2)));
   }
 
   // Called once the command ends or is interrupted.
