@@ -5,6 +5,8 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmExtension;
 
@@ -34,7 +36,8 @@ public class ArmExtensionCommand extends CommandBase {
     else if (secondarycontroller.getRawButton(8)){
       speedMult += 0.001;
     }
-    this.subsystem.extendArm(speedMult);
+    this.subsystem.extendArm(speedMult*secondarycontroller.getRawAxis(4));
+    SmartDashboard.putNumber("extenderPosition",subsystem.getEncoderValue());
   }
 
   // Called once the command ends or is interrupted.
