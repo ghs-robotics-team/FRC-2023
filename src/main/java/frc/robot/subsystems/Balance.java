@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Balance extends SubsystemBase {
   /** Creates a new Balance. */
-public PID controller = new PID(0, 0, 0);
-  AHRS gyro = new AHRS(SPI.Port.kMXP);
+  public PID controller = new PID(0, 0, 0);
+  private AHRS gyro = new AHRS(SPI.Port.kMXP);
   public double zero = 0;
   public double out = 0;
   public void reset (){

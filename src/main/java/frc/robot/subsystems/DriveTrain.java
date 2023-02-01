@@ -31,6 +31,10 @@ public class DriveTrain extends SubsystemBase {
     frontLeft.set(TalonFXControlMode.PercentOutput,left);
     frontRight.set(TalonFXControlMode.PercentOutput,right);
   }
+  public void tankdriveVelocity(double leftVelocity, double rightVelocity){
+    frontLeft.set(TalonFXControlMode.Velocity,leftVelocity);
+    frontRight.set(TalonFXControlMode.Velocity, rightVelocity);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

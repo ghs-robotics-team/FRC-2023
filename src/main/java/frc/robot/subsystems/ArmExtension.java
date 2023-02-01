@@ -4,19 +4,25 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmExtension extends SubsystemBase {
 
-  private Solenoid extender = new Solenoid(PneumaticsModuleType.REVPH, 0);
+  private CANSparkMax extender = new CANSparkMax(0,MotorType.kBrushless);
   /** Creates a new ArmExtension. */
   public ArmExtension() {}
 
-  public void extendArm(boolean extended){
-    extender.set(extended);
+  public void extendArm(double speed){
+    extender.set(speed);
   }
+
+  public double getEncoderValue(){
+    return extender.getEncoder().getPosition();
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

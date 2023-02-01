@@ -4,13 +4,17 @@
 
 package frc.robot;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmExtensionCommand;
-import frc.robot.commands.ArmPivotCommand;
-import frc.robot.commands.AutoBalanceCommand;
-import frc.robot.commands.ClawCommand;
-import frc.robot.commands.ElevatorCommand;
-import frc.robot.commands.RotateTurret;
-import frc.robot.commands.TankDrive;
+import frc.robot.commands.auto.AutoAlignArmToHeightCommand;
+import frc.robot.commands.auto.AutoAlignRobotToTapeCommand;
+import frc.robot.commands.auto.AutoExtendArmToDistCommand;
+import frc.robot.commands.auto.ReleaseClawCommand;
+import frc.robot.commands.teleop.ArmExtensionCommand;
+import frc.robot.commands.teleop.ArmPivotCommand;
+import frc.robot.commands.teleop.AutoBalanceCommand;
+import frc.robot.commands.teleop.ClawCommand;
+import frc.robot.commands.teleop.ElevatorCommand;
+import frc.robot.commands.teleop.RotateTurret;
+import frc.robot.commands.teleop.TankDrive;
 import frc.robot.subsystems.ArmExtension;
 import frc.robot.subsystems.ArmPivot;
 import frc.robot.subsystems.Balance;
@@ -20,6 +24,8 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -56,10 +62,6 @@ public class RobotContainer {
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
   private AutoBalanceCommand autoBalance = new AutoBalanceCommand(driveTrain, balance);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -89,6 +91,19 @@ public class RobotContainer {
     // turret.setDefaultCommand(rotateTurret);
     driveTrain.setDefaultCommand(tankDrive);
     autoBalanceButton.whileHeld(autoBalance);
+
+    Command autoPlaceConeCommand = new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        new AutoAlignRobotToTapeCommand(driveTrain),
+        new AutoAlignArmToHeightCommand(armPivot),
+        new AutoExtendArmToDistCommand(armExtension)
+      ),
+      new ReleaseClawCommand(claw),
+      new ParallelCommandGroup(
+        //reset extend to 0
+        //reset rotation to pointing up
+      )
+    );
   }
 
   /**
