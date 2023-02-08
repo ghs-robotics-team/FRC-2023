@@ -12,11 +12,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmExtension extends SubsystemBase {
 
   private CANSparkMax extender = new CANSparkMax(0,MotorType.kBrushless);
+  private CANSparkMax testExtender = new CANSparkMax(6, MotorType.kBrushless);
   /** Creates a new ArmExtension. */
   public ArmExtension() {}
 
   public void extendArm(double speed){
     extender.set(speed);
+  }
+
+  public void runSpark(double speed){
+    testExtender.set(speed);
   }
 
   public double getEncoderValue(){

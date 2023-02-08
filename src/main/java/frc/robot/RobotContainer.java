@@ -84,7 +84,7 @@ public class RobotContainer {
   }
 
   public void setup(){
-    // armExtension.setDefaultCommand(armExtensionCommand);
+    armExtension.setDefaultCommand(armExtensionCommand);
     armPivot.setDefaultCommand(armPivotCommand);
     claw.setDefaultCommand(clawCommand);
     // elevator.setDefaultCommand(elevatorCommand);

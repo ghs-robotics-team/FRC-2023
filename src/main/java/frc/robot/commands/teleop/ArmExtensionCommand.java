@@ -36,6 +36,7 @@ public class ArmExtensionCommand extends CommandBase {
     else if (secondarycontroller.getRawButton(8)){
       speedMult += 0.001;
     }
+    this.subsystem.runSpark(secondarycontroller.getRawAxis(5)*.1);
     this.subsystem.extendArm(speedMult*secondarycontroller.getRawAxis(4));
     SmartDashboard.putNumber("extenderPosition",subsystem.getEncoderValue());
   }
