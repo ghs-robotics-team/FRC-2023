@@ -1,8 +1,8 @@
 package frc.robot.commands.misc;
 
 public class InverseKinematics {
-    private double x = 0;
-    private double y = 0;
+    private double r = 0;
+    private double theta = 0;
     private double l1 = 26.5;
     private double l2 = 27;
     private double shoulderAngle = 0;//opposite of l2
@@ -11,15 +11,19 @@ public class InverseKinematics {
     private double targetAngle = 0;
     private double ptargetAngle = 0;
     public InverseKinematics(){}
-    public void set(double x, double y){
-        this.x = x;
-        this.y = y;
+    public void set(double r, double theta){
+        this.r = r;
+        this.theta = theta;
+        calc();
     }
-    public void move(double dx, double dy){
-        this.x += dx;
-        this.y += dy;
+    public void move(double dr, double dtheta){
+        this.r += dr;
+        this.theta += dtheta;
+        calc();
     }
     public void calc(){
+        double x = r * Math.cos(theta);
+        double y = r * Math.sin(theta);
         double h = Math.sqrt(x*x + y*y);
         double triangleAngle1 = Math.acos((-l2*l2 + l1*l1 + h*h) / (2*h*l1));
         double triangleAngle2 = Math.acos((-h*h + l2*l2 + l1*l1) / (2*l2*l1));

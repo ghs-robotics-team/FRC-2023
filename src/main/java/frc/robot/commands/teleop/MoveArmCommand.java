@@ -25,7 +25,7 @@ public class MoveArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    IK.move(secondary.getRawAxis(0)*0.01, secondary.getRawAxis(1)*0.01);
+    IK.move(secondary.getRawAxis(0)*0.01, secondary.getRawAxis(1)*0.002);
   }
 
   // Called once the command ends or is interrupted.
