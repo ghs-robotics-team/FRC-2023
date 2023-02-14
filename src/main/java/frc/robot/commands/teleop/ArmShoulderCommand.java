@@ -4,43 +4,35 @@
 
 package frc.robot.commands.teleop;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmPivot;
+import frc.robot.commands.misc.InverseKinematics;
+import frc.robot.subsystems.ArmShoulder;
 
-public class ArmPivotCommand extends CommandBase {
+public class ArmShoulderCommand extends CommandBase {
   /** Creates a new ArmPivotCommand. */
-  private ArmPivot subsystem;
-  private Joystick secondarycontroller;
-  private Joystick rightJoystick;
-  private SlewRateLimiter limiter = new SlewRateLimiter(0.5);
-  private double speedMult = 1;
-  public ArmPivotCommand(ArmPivot subsystem, Joystick secondarycontroller, Joystick rightJoystick) {
+  private ArmShoulder subsystem;
+  private InverseKinematics IK;
+  public ArmShoulderCommand(ArmShoulder subsystem, InverseKinematics IK) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subsystem = subsystem;
-    this.secondarycontroller = secondarycontroller;
-    this.rightJoystick = rightJoystick;
+    this.IK = IK;
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsystem.turning(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    speedMult = (-rightJoystick.getRawAxis(3) +1)/2;
-    subsystem.turning(limiter.calculate(Math.pow(secondarycontroller.getRawAxis(1),2)*speedMult));
+    subsystem.setPosition(IK.getShoulderAngle());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.turning(0);
   }
 
   // Returns true when the command should end.
