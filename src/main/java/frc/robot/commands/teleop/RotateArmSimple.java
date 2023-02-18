@@ -6,39 +6,37 @@ package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
-
-public class ElevatorCommand extends CommandBase {
-  private Joystick controller;
-  private Elevator subsystem;
+import frc.robot.subsystems.ArmElbow;
+import frc.robot.subsystems.ArmShoulder;
 
 
-  /** Creates a new Elevator. */
-  public ElevatorCommand(Elevator subsystem, Joystick controller) {
-    this.subsystem = subsystem;
-    this.controller = controller;
-    addRequirements(this.subsystem);
+public class RotateArmSimple extends CommandBase {
+  /** Creates a new MoveArmCommand. */
+  private Joystick secondary;
+  private ArmElbow elbowSubsystem;
+  private ArmShoulder shoulderSubsystem;
+  private final double speedConst = 0.1;
+  public RotateArmSimple(ArmElbow elbowSubsystem, ArmShoulder shoulderSubsystem, Joystick secondary) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.secondary = secondary;
+
+    addRequirements(this.elbowSubsystem, this.shoulderSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-   subsystem.elevation (0.0);
-  }
-
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.elevation(controller.getRawAxis(0));
+    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*speedConst);
+    shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*speedConst);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    subsystem.elevation (0.0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

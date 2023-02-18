@@ -4,27 +4,32 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
 
-  private CANSparkMax claw = new CANSparkMax(5,MotorType.kBrushless);
+  private DoubleSolenoid claw = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
 
   /** Creates a new Claw. */
   public Claw() {
-    claw.setIdleMode(IdleMode.kBrake);
+    
   }
 
-  public void moveClaw(double speed){
-    claw.set(speed);
+  public void openClaw(){
+    claw.set(Value.kForward);
+  }   
+  public void closeClaw(){
+    claw.set(Value.kReverse);
+  }   
+  public void killClaw(){
+    claw.set(Value.kOff);
   }   
   
-  public double getEncoderValue(){
-    return claw.getEncoder().getPosition();
+  public void toggleClaw(){
+    claw.toggle();
   }
 
   @Override

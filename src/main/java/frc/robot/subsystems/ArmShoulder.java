@@ -23,6 +23,10 @@ public class ArmShoulder extends SubsystemBase {
     armSpark.getPIDController().setReference(rad/TWO_PI, ControlType.kPosition);
   }
 
+  public void setSpeed(double speed){
+    armSpark.set(speed);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

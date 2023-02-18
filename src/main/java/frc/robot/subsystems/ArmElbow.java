@@ -21,6 +21,10 @@ public class ArmElbow extends SubsystemBase {
     elbowMotor.set(TalonFXControlMode.MotionMagic,rad*325.949323);
   }
 
+  public void setSpeed(double speed){
+    elbowMotor.set(TalonFXControlMode.PercentOutput, speed);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
