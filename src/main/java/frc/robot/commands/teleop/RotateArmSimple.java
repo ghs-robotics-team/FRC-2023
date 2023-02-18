@@ -17,11 +17,14 @@ public class RotateArmSimple extends CommandBase {
   private Joystick secondary;
   private ArmElbow elbowSubsystem;
   private ArmShoulder shoulderSubsystem;
-  private ArmBrake brakeSubystem;
+  private ArmBrake brakeSubsystem;
   private final double speedConst = 0.05;
-  private Subsystem brakeSubsystem;
+
   public RotateArmSimple(ArmElbow elbowSubsystem, ArmShoulder shoulderSubsystem, ArmBrake brakeSubsystem, Joystick secondary) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.brakeSubsystem = brakeSubsystem;
+    this.elbowSubsystem = elbowSubsystem;
+    this.shoulderSubsystem = shoulderSubsystem;
     this.secondary = secondary;
 
     addRequirements(this.elbowSubsystem, this.shoulderSubsystem, this.brakeSubsystem);
@@ -35,17 +38,17 @@ public class RotateArmSimple extends CommandBase {
   @Override
   public void execute() {
     if(Math.abs(secondary.getRawAxis(0))<0.1){
-      brakeSubystem.brakeElbow();
+      brakeSubsystem.brakeElbow();
     }else{
-      brakeSubystem.releaseElbow();
+      brakeSubsystem.releaseElbow();
     }
     if(Math.abs(secondary.getRawAxis(4))<0.1){
-      brakeSubystem.brakeShoulder();
+      brakeSubsystem.brakeShoulder();
     }else{
-      brakeSubystem.releaseShoulder();
+      brakeSubsystem.releaseShoulder();
     }
-    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*speedConst);
-    shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*speedConst);
+    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.45);
+    shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*0.1);
   }
 
   // Called once the command ends or is interrupted.

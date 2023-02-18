@@ -3,11 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import frc.robot.commands.misc.InverseKinematics;
-import frc.robot.commands.teleop.ArmElbowCommand;
-import frc.robot.commands.teleop.ArmShoulderCommand;
 import frc.robot.commands.teleop.ClawCommand;
-import frc.robot.commands.teleop.MoveArmCommand;
 import frc.robot.commands.teleop.RotateArmSimple;
 import frc.robot.commands.teleop.TankDrive;
 import frc.robot.subsystems.ArmElbow;

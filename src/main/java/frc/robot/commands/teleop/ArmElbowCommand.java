@@ -26,7 +26,7 @@ public class ArmElbowCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elbowSubsystem.setPosition(IK.getElbowAngle());
+    elbowSubsystem.setPosition(IK.getElbowAngle()/7);
   }
 
   // Called once the command ends or is interrupted.

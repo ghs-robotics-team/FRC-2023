@@ -27,7 +27,7 @@ public class ArmShoulderCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.setPosition(IK.getShoulderAngle());
+    subsystem.setPosition(IK.getShoulderAngle()/((72/22)*30));
   }
 
   // Called once the command ends or is interrupted.

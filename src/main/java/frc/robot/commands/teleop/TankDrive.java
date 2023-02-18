@@ -12,7 +12,7 @@ public class TankDrive extends CommandBase {
   private Joystick leftJoystick;
     private Joystick rightJoystick;
     private DriveTrain subsystem;
-    private double speedMult = 1;
+    private double speedMult = .6;
   /** Creates a new TankDrive. */
   public TankDrive(DriveTrain subsystem, Joystick leftJoystick, Joystick rightJoystick) {
     this.subsystem = subsystem;

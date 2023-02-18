@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmElbow extends SubsystemBase {
-  private TalonFX elbowMotor = new TalonFX(6);
+  private TalonFX elbowMotor = new TalonFX(5);
   /** Creates a new ArmElbow. */
   public ArmElbow() {
     elbowMotor.setNeutralMode(NeutralMode.Brake);
