@@ -48,7 +48,7 @@ public class RotateArmSimple extends CommandBase {
       brakeSubsystem.releaseShoulder();
     }
     elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.45);
-    shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*0.1);
+    shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*0.15);
   }
 
   // Called once the command ends or is interrupted.
