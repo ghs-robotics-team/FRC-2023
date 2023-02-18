@@ -39,6 +39,9 @@ public class ClawCommand extends CommandBase {
     if(controller.getPOV()==0){
       subsystem.killClaw();
     }
+    if(controller.getPOV()==180){
+      subsystem.toggleClaw();
+    }
   }
 
   // Called once the command ends or is interrupted.
