@@ -8,6 +8,7 @@ import frc.robot.commands.teleop.ArmElbowCommand;
 import frc.robot.commands.teleop.ArmShoulderCommand;
 import frc.robot.commands.teleop.ClawCommand;
 import frc.robot.commands.teleop.MoveArmCommand;
+import frc.robot.commands.teleop.RotateArmSimple;
 import frc.robot.commands.teleop.TankDrive;
 import frc.robot.subsystems.ArmElbow;
 import frc.robot.subsystems.ArmShoulder;
@@ -36,12 +37,13 @@ public class RobotContainer {
   private Joystick joystick_right = new Joystick(1);
   private Joystick secondarycontroller = new Joystick(2);
 
-  private InverseKinematics IK = new InverseKinematics();
+  //private InverseKinematics IK = new InverseKinematics();
 
   //Commands
-  private MoveArmCommand moveArmCommand = new MoveArmCommand(IK, secondarycontroller);
-  private ArmShoulderCommand armPivotCommand = new ArmShoulderCommand(armPivot, IK);
-  private ArmElbowCommand armElbowCommand = new ArmElbowCommand(armElbow, IK);
+  //private MoveArmCommand moveArmCommand = new MoveArmCommand(IK, secondarycontroller);
+  //private ArmShoulderCommand armPivotCommand = new ArmShoulderCommand(armPivot, IK);
+  //private ArmElbowCommand armElbowCommand = new ArmElbowCommand(armElbow, IK);
+  private RotateArmSimple rotateArmSimple = new RotateArmSimple(armElbow, armPivot, secondarycontroller);
   private ClawCommand clawCommand = new ClawCommand(claw, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
 
@@ -67,13 +69,11 @@ public class RobotContainer {
   }
 
   public void setup(){
-    armElbow.setDefaultCommand(armElbowCommand);
-    armPivot.setDefaultCommand(armPivotCommand);
+    //armElbow.setDefaultCommand(armElbowCommand);
+    //armPivot.setDefaultCommand(armPivotCommand);
     claw.setDefaultCommand(clawCommand);
-    // elevator.setDefaultCommand(elevatorCommand);
-    // turret.setDefaultCommand(rotateTurret);
     driveTrain.setDefaultCommand(tankDrive);
-    moveArmCommand.schedule();
+    rotateArmSimple.schedule();
   }
 
   /**
