@@ -18,7 +18,7 @@ public class RotateArmSimple extends CommandBase {
   private ArmElbow elbowSubsystem;
   private ArmShoulder shoulderSubsystem;
   private ArmBrake brakeSubystem;
-  private final double speedConst = 0.1;
+  private final double speedConst = 0.05;
   private Subsystem brakeSubsystem;
   public RotateArmSimple(ArmElbow elbowSubsystem, ArmShoulder shoulderSubsystem, ArmBrake brakeSubsystem, Joystick secondary) {
     // Use addRequirements() here to declare subsystem dependencies.
