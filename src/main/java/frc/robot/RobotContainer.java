@@ -12,6 +12,7 @@ import frc.robot.commands.teleop.RotateArmSimple;
 import frc.robot.commands.teleop.TankDrive;
 import frc.robot.subsystems.ArmElbow;
 import frc.robot.subsystems.ArmShoulder;
+import frc.robot.subsystems.ArmBrake;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.Joystick;
@@ -32,6 +33,7 @@ public class RobotContainer {
   private Claw claw = new Claw();
   private DriveTrain driveTrain = new DriveTrain();
   private ArmElbow armElbow = new ArmElbow();
+  private ArmBrake armBrake = new ArmBrake();
   //Joysticks
   private Joystick joystick_left = new Joystick(0);
   private Joystick joystick_right = new Joystick(1);
@@ -43,7 +45,7 @@ public class RobotContainer {
   //private MoveArmCommand moveArmCommand = new MoveArmCommand(IK, secondarycontroller);
   //private ArmShoulderCommand armPivotCommand = new ArmShoulderCommand(armPivot, IK);
   //private ArmElbowCommand armElbowCommand = new ArmElbowCommand(armElbow, IK);
-  private RotateArmSimple rotateArmSimple = new RotateArmSimple(armElbow, armPivot, secondarycontroller);
+  private RotateArmSimple rotateArmSimple = new RotateArmSimple(armElbow, armPivot, armBrake, secondarycontroller);
   private ClawCommand clawCommand = new ClawCommand(claw, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
 
