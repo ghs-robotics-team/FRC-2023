@@ -23,7 +23,7 @@ public class ClawCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    subsystem.closeClaw();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

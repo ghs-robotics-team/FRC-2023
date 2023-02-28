@@ -6,7 +6,6 @@ package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.ArmElbow;
 import frc.robot.subsystems.ArmShoulder;
 import frc.robot.subsystems.ArmBrake;
@@ -18,7 +17,6 @@ public class RotateArmSimple extends CommandBase {
   private ArmElbow elbowSubsystem;
   private ArmShoulder shoulderSubsystem;
   private ArmBrake brakeSubsystem;
-  private final double speedConst = 0.05;
 
   public RotateArmSimple(ArmElbow elbowSubsystem, ArmShoulder shoulderSubsystem, ArmBrake brakeSubsystem, Joystick secondary) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -47,7 +45,7 @@ public class RotateArmSimple extends CommandBase {
     }else{
       brakeSubsystem.releaseShoulder();
     }
-    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.45);
+    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.05);
     shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*0.15);
   }
 

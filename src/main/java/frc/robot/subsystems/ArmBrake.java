@@ -14,7 +14,6 @@ public class ArmBrake extends SubsystemBase {
   private DoubleSolenoid shoulderBrake = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 2, 3);
   private DoubleSolenoid elbowBrake = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 4, 5);
 
-
   /** Creates a new Claw. */
   public ArmBrake() {
     
