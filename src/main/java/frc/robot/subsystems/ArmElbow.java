@@ -15,10 +15,12 @@ public class ArmElbow extends SubsystemBase {
   /** Creates a new ArmElbow. */
   public ArmElbow() {
     elbowMotor.setNeutralMode(NeutralMode.Brake);
+    elbowMotor.setSensorPhase(false);
+    elbowMotor.setSelectedSensorPosition(0);
   }
 
-  public void setPosition(double rad){
-    elbowMotor.set(TalonFXControlMode.MotionMagic,rad*325.949323);
+  public double getPos(){
+    return elbowMotor.getSelectedSensorPosition();
   }
 
   public void setSpeed(double speed){

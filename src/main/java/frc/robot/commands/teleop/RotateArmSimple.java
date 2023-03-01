@@ -5,6 +5,7 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmElbow;
 import frc.robot.subsystems.ArmShoulder;
@@ -47,6 +48,8 @@ public class RotateArmSimple extends CommandBase {
     }
     elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.05);
     shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*0.15);
+    SmartDashboard.putNumber("elbow position",elbowSubsystem.getPos());
+    SmartDashboard.putNumber("shoulder position",elbowSubsystem.getPos());
   }
 
   // Called once the command ends or is interrupted.

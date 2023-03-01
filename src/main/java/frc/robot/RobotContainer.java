@@ -11,6 +11,11 @@ import frc.robot.subsystems.ArmShoulder;
 import frc.robot.subsystems.ArmBrake;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
+
+import com.pathplanner.lib.PathPoint;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,6 +35,9 @@ public class RobotContainer {
   private DriveTrain driveTrain = new DriveTrain();
   private ArmElbow armElbow = new ArmElbow();
   private ArmBrake armBrake = new ArmBrake();
+
+  private PathPoint[] auto1PathPoints = new PathPoint[]{new PathPoint(new Translation2d(0,0),new Rotation2d(0))};
+
   //Joysticks
   private Joystick joystick_left = new Joystick(0);
   private Joystick joystick_right = new Joystick(1);

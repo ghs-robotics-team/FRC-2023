@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,10 +16,12 @@ public class ArmShoulder extends SubsystemBase {
   /** Creates a new ArmPivot. */
   public ArmShoulder() {
     armSpark.setIdleMode(IdleMode.kBrake);
+    armSpark.getEncoder().setPosition(0);
+    armSpark.getEncoder().setPositionConversionFactor(42);
   }
 
-  public void setPosition(double rad){
-    armSpark.getPIDController().setReference(rad/TWO_PI, ControlType.kPosition);
+  public double getPos(){
+    return armSpark.getEncoder().getPosition();
   }
 
   public void setSpeed(double speed){
