@@ -17,7 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "PlaceCone"
+          "PlaceConeTop1"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -26,16 +26,16 @@
     },
     {
       "anchorPoint": {
-        "x": 5.921576229117371,
-        "y": 4.824271753806666
+        "x": 5.562061934934682,
+        "y": 4.831419176351867
       },
       "prevControl": {
-        "x": 4.570404930283546,
-        "y": 5.050978347570731
+        "x": 4.2108906361008565,
+        "y": 5.0581257701159315
       },
       "nextControl": {
-        "x": 4.570404930283546,
-        "y": 5.050978347570731
+        "x": 4.2108906361008565,
+        "y": 5.0581257701159315
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -44,7 +44,7 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "GrabCube"
+          "GrabCubeTop"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -71,7 +71,7 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "PlaceCube"
+          "PlaceCubeTop"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -80,16 +80,16 @@
     },
     {
       "anchorPoint": {
-        "x": 5.985054075371309,
-        "y": 4.035332807507721
+        "x": 6.175919378865786,
+        "y": 3.8709128229067282
       },
       "prevControl": {
-        "x": 4.416244446523981,
-        "y": 5.005637028817924
+        "x": 4.607109750018458,
+        "y": 4.841217044216932
       },
       "nextControl": {
-        "x": 4.416244446523981,
-        "y": 5.005637028817924
+        "x": 4.607109750018458,
+        "y": 4.841217044216932
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -98,7 +98,7 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "GrabCone"
+          "GrabConeTop"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -122,7 +122,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "PlaceCone"
+          "PlaceConeTop2"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -131,14 +131,7 @@
     }
   ],
   "maxVelocity": 9.0,
-  "maxAcceleration": 6.0,
+  "maxAcceleration": 7.0,
   "isReversed": null,
-  "markers": [
-    {
-      "position": 1.0,
-      "names": [
-        "GrabCube"
-      ]
-    }
-  ]
+  "markers": []
 }

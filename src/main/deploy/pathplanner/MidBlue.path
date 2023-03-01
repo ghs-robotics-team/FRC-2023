@@ -17,7 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "PlaceCube"
+          "PlaceCubeMid"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",

@@ -12,12 +12,18 @@ import frc.robot.subsystems.ArmBrake;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
 
-import com.pathplanner.lib.PathPoint;
+import java.util.HashMap;
+import java.util.List;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
+
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -36,7 +42,10 @@ public class RobotContainer {
   private ArmElbow armElbow = new ArmElbow();
   private ArmBrake armBrake = new ArmBrake();
 
-  private PathPoint[] auto1PathPoints = new PathPoint[]{new PathPoint(new Translation2d(0,0),new Rotation2d(0))};
+  //Trajectories
+  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(4, 3));
+  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(4, 3));
+  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(4, 3));
 
   //Joysticks
   private Joystick joystick_left = new Joystick(0);
@@ -52,11 +61,38 @@ public class RobotContainer {
   private RotateArmSimple rotateArmSimple = new RotateArmSimple(armElbow, armPivot, armBrake, secondarycontroller);
   private ClawCommand clawCommand = new ClawCommand(claw, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
-
+  
+  private HashMap<String, Command> eventMap;
+  private RamseteAutoBuilder autoBuilder;
+  private Command bottomAuto;
+  private Command midAuto;
+  private Command topAuto;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    eventMap = new HashMap<>();
+
+    eventMap.put("PlaceConeBottom1",new WaitCommand(1.6));
+    eventMap.put("PlaceCubeBottom",new WaitCommand(1.6));
+    eventMap.put("PlaceConeBottom2",new WaitCommand(1.6));
+    eventMap.put("PlaceConeMid",new WaitCommand(1.6));
+    eventMap.put("AutoBalance",new WaitCommand(1));
+    eventMap.put("PlaceConeTop1",new WaitCommand(1.6));
+    eventMap.put("PlaceCubeTop",new WaitCommand(1.6));
+    eventMap.put("PlaceConeTop2",new WaitCommand(1.6));
+    eventMap.put("GrabCubeBottom",new WaitCommand(2));
+    eventMap.put("GrabConeBottom",new WaitCommand(2));
+    eventMap.put("GrabCubeTop",new WaitCommand(2));
+    eventMap.put("GrabConeTop",new WaitCommand(2));
+
+    autoBuilder = new RamseteAutoBuilder(
+      driveTrain::getPose, driveTrain::resetPose, new RamseteController(), driveTrain.getKinematics(), driveTrain::tankdriveVelocity, eventMap, true, driveTrain
+    );
+
+    bottomAuto = autoBuilder.fullAuto(bottomBluePath);
+    midAuto = autoBuilder.fullAuto(midBluePath);
+    topAuto = autoBuilder.fullAuto(topBluePath);
   }
 
   /**
@@ -87,8 +123,17 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand(AutoType type) {
     // An example command will be run in autonomous
-    return null;
+    if(type == AutoType.Bottom){
+      return bottomAuto;
+    }
+    if(type == AutoType.Middle){
+      return midAuto;
+    }
+    if(type == AutoType.Top){
+      return topAuto;
+    }
+    return new WaitCommand(15);
   }
 }

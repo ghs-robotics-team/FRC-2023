@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -16,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private GenericEntry autoMode = Shuffleboard.getTab("AutoMenu").add("Auto Mode",1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
   private RobotContainer m_robotContainer;
 
@@ -56,7 +60,15 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    if(autoMode.getDouble(0) == AutoType.Bottom.id){
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Bottom);
+    }else if(autoMode.getDouble(0) == AutoType.Middle.id){
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Middle);
+    }else if(autoMode.getDouble(0) == AutoType.Top.id){
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Top);
+    }else{
+      m_autonomousCommand = null;
+    }
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
