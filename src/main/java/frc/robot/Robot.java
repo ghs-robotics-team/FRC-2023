@@ -60,11 +60,11 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    if(autoMode.getDouble(0) == AutoType.Bottom.id){
+    if(autoMode.getDouble(1) == AutoType.Bottom.id){
       m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Bottom);
-    }else if(autoMode.getDouble(0) == AutoType.Middle.id){
+    }else if(autoMode.getDouble(1) == AutoType.Middle.id){
       m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Middle);
-    }else if(autoMode.getDouble(0) == AutoType.Top.id){
+    }else if(autoMode.getDouble(1) == AutoType.Top.id){
       m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Top);
     }else{
       m_autonomousCommand = null;
