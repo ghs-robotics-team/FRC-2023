@@ -10,20 +10,33 @@ public class InverseKinematics {
     private boolean right = true;
     private double targetAngle = 0;
     private double ptargetAngle = 0;
+    private double x = 0;
+    private double y = 0;
+    private boolean XYMode = false;
     public InverseKinematics(){}
     public void set(double r, double theta){
         this.r = r;
         this.theta = theta;
+        this.XYMode = false;
+        calc();
+    }
+    public void setXY(double x, double y){
+        this.x = x;
+        this.y = y;
+        this.XYMode = true;
         calc();
     }
     public void move(double dr, double dtheta){
         this.r += dr;
         this.theta += dtheta;
+        this.XYMode = false;
         calc();
     }
     public void calc(){
-        double x = r * Math.cos(theta);
-        double y = r * Math.sin(theta);
+        if(!XYMode){
+            x = r * Math.cos(theta);
+            y = r * Math.sin(theta);
+        }
         double h = Math.sqrt(x*x + y*y);
         double triangleAngle1 = Math.acos((-l2*l2 + l1*l1 + h*h) / (2*h*l1));
         double triangleAngle2 = Math.acos((-h*h + l2*l2 + l1*l1) / (2*l2*l1));
