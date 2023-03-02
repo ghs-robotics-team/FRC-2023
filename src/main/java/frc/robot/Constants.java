@@ -15,5 +15,13 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double ShoulderP = 0;
+    public static final double ShoulderI = 0;
+    public static final double ShoulderD = 0;
+    public static final double ElbowP = 0;
+    public static final double ElbowI = 0;
+    public static final double ElbowD = 0;
+    public static boolean ShoulderCorrect = false;
+    public static boolean ElbowCorrect = false;
   }
 }

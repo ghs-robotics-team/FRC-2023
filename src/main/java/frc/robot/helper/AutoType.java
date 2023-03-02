@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.helper;
 
 public enum AutoType{
     Top(0),

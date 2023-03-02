@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.misc.InverseKinematics;
 import frc.robot.subsystems.ArmShoulder;
 
@@ -45,6 +46,11 @@ public class ArmShoulderCommand extends CommandBase {
     double targetPos = IK.getElbowAngle()*angleToTickFactor;
     double speed = pid.calculate(subsystem.getPos(), targetPos);
     subsystem.setSpeed(Math.max(Math.min(speed,0.2),-0.2));
+    if(Math.abs(targetPos-subsystem.getPos()) < 2*Math.PI/360*angleToTickFactor){
+      OperatorConstants.ShoulderCorrect = true;
+    }else{
+      OperatorConstants.ShoulderCorrect = false;
+    }
     SmartDashboard.putNumber("Shoulder Target", targetPos);
     SmartDashboard.putNumber("Shoulder Position", subsystem.getPos());
     SmartDashboard.putNumber("Shoulder PID Speed Output", speed);

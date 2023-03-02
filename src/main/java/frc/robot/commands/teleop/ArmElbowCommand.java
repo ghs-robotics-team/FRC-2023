@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.misc.InverseKinematics;
 import frc.robot.subsystems.ArmElbow;
 
@@ -47,6 +48,11 @@ public class ArmElbowCommand extends CommandBase {
     SmartDashboard.putNumber("Elbow Target", targetPos);
     SmartDashboard.putNumber("Elbow Position", elbowSubsystem.getPos());
     SmartDashboard.putNumber("Elbow PID Speed Output", speed);
+    if(Math.abs(targetPos-elbowSubsystem.getPos()) < 2*Math.PI/360*angleToTickFactor){
+      OperatorConstants.ShoulderCorrect = true;
+    }else{
+      OperatorConstants.ShoulderCorrect = false;
+    }
   }
 
   // Called once the command ends or is interrupted.
