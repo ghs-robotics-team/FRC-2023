@@ -1,16 +1,15 @@
 package frc.robot.helper;
 
 public enum SetPoints {
-    Home(0,0),//a
-    Intake(0,0),//b
-    PlaceHigh(0,0),//x
-    PlaceMid(0,0),//y
-    PlaceLow(0,0),//rb
-    GrabSubstation(0,0),//lb
-    GrabCubeAuto(0,0),
-    GrabConeAuto(0,0),
-    PlaceCubeAuto(0,0),
-    PlaceCone2Auto(0,0);
+    Home(-6,6),//a
+    Intake(-26,-10),//b
+    PlaceHigh(48,25),//x
+    PlaceMid(32,10),//y
+    PlaceLow(16,0),//rb
+    GrabSubstation(16,25),//lb
+    GrabCubeAuto(48,-10),
+    PlaceCubeAuto(48,25),
+    PlaceCone2Auto(52,25);
     public double x;
     public double y;
     private SetPoints(double x, double y){
