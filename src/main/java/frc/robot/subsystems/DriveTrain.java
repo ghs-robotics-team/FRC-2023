@@ -56,6 +56,9 @@ public class DriveTrain extends SubsystemBase {
     double leftRotations = (leftVelocity/r)/(2*Math.PI);
     double rightRotations = (rightVelocity/r)/(2*Math.PI);
 
+    leftRotations/=10;
+    rightRotations/=10;
+
     frontLeft.set(TalonFXControlMode.Velocity, leftRotations*2048);
     frontRight.set(TalonFXControlMode.Velocity, rightRotations*2048);
   }
