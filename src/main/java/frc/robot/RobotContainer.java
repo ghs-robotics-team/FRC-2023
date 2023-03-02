@@ -76,60 +76,60 @@ public class RobotContainer {
 
     eventMap.put("PlaceConeBottom1",new WaitCommand(1.6));
     //new SetArmPointCommand(SetPoints.PlaceHigh);
-    //new OpenClawCommand();
+    //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
     
     eventMap.put("PlaceCubeBottom",new WaitCommand(1.6));
     //new SetArmPointCommand(SetPoints.PlaceCubeAuto);
-    //new OpenClawCommand();
+    //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceConeBottom2",new WaitCommand(1.6));
     //new SetArmPointCommand(SetPoints.PlaceCone2Auto);
-    //new OpenClawCommand();
+    //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceConeMid",new WaitCommand(1.6));
     //new SetArmPointCommand(SetPoints.PlaceHigh);
-    //new OpenClawCommand();
+    //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("AutoBalance",new WaitCommand(1));
-    //new AutoBalanceCommand();
+    //new AutoBalanceCommand(driveTrain);
 
     eventMap.put("PlaceConeTop1",new WaitCommand(1.6));
     //new SetArmPointCommand(SetPoints.PlaceHigh);
-    //new OpenClawCommand();
+    //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceCubeTop",new WaitCommand(1.6));
     //new SetArmPointCommand(SetPoints.PlaceCubeAuto);
-    //new OpenClawCommand();
+    //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceConeTop2",new WaitCommand(1.6));
     //new SetArmPointCommand(SetPoints.PlaceCone2Auto);
-    //new OpenClawCommand();
+    //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("GrabCubeBottom",new WaitCommand(2));
     //new SetArmPointCommand(SetPoints.GrabCubeAuto);
-    //new CloseClawCommand();
+    //new CloseClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("GrabConeBottom",new WaitCommand(2));
     //new SetArmPointCommand(SetPoints.Intake);
-    //new CloseClawCommand();
+    //new CloseClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("GrabCubeTop",new WaitCommand(2));
     //new SetArmPointCommand(SetPoints.GrabCubeAuto);
-    //new CloseClawCommand();
+    //new CloseClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("GrabConeTop",new WaitCommand(2));
     //new SetArmPointCommand(SetPoints.Intake);
-    //new CloseClawCommand();
+    //new CloseClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     autoBuilder = new RamseteAutoBuilder(
