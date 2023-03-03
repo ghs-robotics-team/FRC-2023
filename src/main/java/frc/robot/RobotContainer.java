@@ -75,22 +75,22 @@ public class RobotContainer {
     eventMap = new HashMap<>();
 
     eventMap.put("PlaceConeBottom1",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceHigh);
+    //new SetArmPointCommand(SetPoints.PlaceHigh); - also run claw motors while doing this
     //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
     
     eventMap.put("PlaceCubeBottom",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCubeAuto);
+    //new SetArmPointCommand(SetPoints.PlaceCubeAuto); - also run claw motors while doing this
     //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceConeBottom2",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCone2Auto);
+    //new SetArmPointCommand(SetPoints.PlaceCone2Auto); - also run claw motors while doing this
     //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceConeMid",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceHigh);
+    //new SetArmPointCommand(SetPoints.PlaceHigh); - also run claw motors while doing this
     //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
@@ -98,17 +98,17 @@ public class RobotContainer {
     //new AutoBalanceCommand(driveTrain);
 
     eventMap.put("PlaceConeTop1",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceHigh);
+    //new SetArmPointCommand(SetPoints.PlaceHigh); - also run claw motors while doing this
     //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceCubeTop",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCubeAuto);
+    //new SetArmPointCommand(SetPoints.PlaceCubeAuto); - also run claw motors while doing this
     //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
     eventMap.put("PlaceConeTop2",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCone2Auto);
+    //new SetArmPointCommand(SetPoints.PlaceCone2Auto); - also run claw motors while doing this
     //new OpenClawCommand(claw);
     //new SetArmPointCommand(SetPoints.Home);
 
