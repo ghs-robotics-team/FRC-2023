@@ -26,6 +26,7 @@ public class DriveTrain extends SubsystemBase {
   private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23));
   private DifferentialDriveOdometry odometry;
   private final Field2d field = new Field2d();
+  private double gearRatio = 1 / 10.71;
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
@@ -76,7 +77,7 @@ public class DriveTrain extends SubsystemBase {
   public double ticksToMeters(TalonFX talon){
     double r = Units.inchesToMeters(3);
     //arc length = rad*r;
-    double rad = talon.getSelectedSensorPosition()/2048.0 * 2 * Math.PI;
+    double rad = talon.getSelectedSensorPosition()/2048.0 * 2 * Math.PI * gearRatio;
     return rad*r;
   }
   @Override
