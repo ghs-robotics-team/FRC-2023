@@ -23,7 +23,7 @@ public class DriveTrain extends SubsystemBase {
   private TalonFX backLeft = new TalonFX(1);
   private TalonFX backRight = new TalonFX(3);
   private AHRS gyro = new AHRS(Port.kMXP);
-  private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23));
+  private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23));//Actually measure this
   private DifferentialDriveOdometry odometry;
   private final Field2d field = new Field2d();
   private double gearRatio = 1 / 10.71;
