@@ -13,6 +13,8 @@ import frc.robot.subsystems.ArmBrake;
 
 
 public class RotateArmSimple extends CommandBase {
+  private double elbowAngleToTickFactor = 49.0*2048*18/22;
+  private double shoulderAngleToTickFactor = 42*30*72/22;
   /** Creates a new MoveArmCommand. */
   private Joystick secondary;
   private ArmElbow elbowSubsystem;
@@ -46,10 +48,10 @@ public class RotateArmSimple extends CommandBase {
     }else{
       brakeSubsystem.releaseShoulder();
     }
-    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.5);
+    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.15);
     shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*0.15);
-    SmartDashboard.putNumber("elbow position",elbowSubsystem.getPos());
-    SmartDashboard.putNumber("shoulder position",elbowSubsystem.getPos());
+    SmartDashboard.putNumber("elbow position",elbowSubsystem.getPos()/elbowAngleToTickFactor);
+    SmartDashboard.putNumber("shoulder position",shoulderSubsystem.getPos()/shoulderAngleToTickFactor);
   }
 
   // Called once the command ends or is interrupted.
