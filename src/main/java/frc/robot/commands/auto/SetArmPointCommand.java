@@ -5,24 +5,23 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.misc.InverseKinematics;
 import frc.robot.helper.SetPoints;
 import frc.robot.Constants.OperatorConstants;
 
 public class SetArmPointCommand extends CommandBase {
   /** Creates a new SetArmPointCommand. */
-  private InverseKinematics IK;
   private SetPoints target;
-  public SetArmPointCommand(InverseKinematics IK, SetPoints target) {
-    this.IK = IK;
+  public SetArmPointCommand(SetPoints target, boolean cubeMode) {
     this.target = target;
+    SetPoints.setCubeMode(cubeMode);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    IK.setXY(target.x, target.y);
+    OperatorConstants.ShoulderTargetAngle = target.getShoulderAngle();
+    OperatorConstants.ElbowTargetAngle = target.getElbowAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

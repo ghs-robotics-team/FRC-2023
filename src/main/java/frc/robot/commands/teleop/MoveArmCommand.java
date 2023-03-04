@@ -6,17 +6,17 @@ package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.misc.InverseKinematics;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.helper.SetPoints;
 
 public class MoveArmCommand extends CommandBase {
   /** Creates a new MoveArmCommand. */
-  private InverseKinematics IK;
   private Joystick secondary;
   private SetPoints setPoint;
-  public MoveArmCommand(InverseKinematics IK, Joystick secondary) {
+  private boolean toggle = false;
+  private boolean pressed = false;
+  public MoveArmCommand(Joystick secondary) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.IK = IK;
     this.secondary = secondary;
   }
 
@@ -27,25 +27,34 @@ public class MoveArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(secondary.getRawButton(1)){
-      setPoint = SetPoints.Home;//a button
+    if(secondary.getPOV() == 90){
+      setPoint = SetPoints.Home;//dpad right
     }
-    if(secondary.getRawButton(2)){
-      setPoint = SetPoints.Intake;//b button
+    if(secondary.getPOV() == 270){
+      setPoint = SetPoints.GrabIntake;//dpad left
     }
-    if(secondary.getRawButton(3)){
-      setPoint = SetPoints.PlaceHigh;//x button
+    if(secondary.getPOV() == 180){
+      setPoint = SetPoints.GrabGround;//dpad down
+    }
+    if(secondary.getPOV() == 0){
+      setPoint = SetPoints.GrabSubstation;//dpad up
     }
     if(secondary.getRawButton(4)){
-      setPoint = SetPoints.PlaceMid;//y button
+      setPoint = SetPoints.PlaceHigh;//y button
     }
-    if(secondary.getRawButton(5)){
-      setPoint = SetPoints.PlaceLow;//lb button
+    if(secondary.getRawButton(2)){
+      setPoint = SetPoints.PlaceMid;//b button
     }
-    if(secondary.getRawButton(6)){
-      setPoint = SetPoints.GrabSubstation;//rb button
+    if(secondary.getRawButton(1)){
+      setPoint = SetPoints.PlaceLow;//a button
     }
-    IK.setXY(setPoint.x, setPoint.y);
+    if(secondary.getRawButton(3) && !toggle){
+      pressed = !pressed;
+      SetPoints.setCubeMode(pressed);
+    }
+    toggle = secondary.getRawButton(3);
+    OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
+    OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
   }
 
   // Called once the command ends or is interrupted.

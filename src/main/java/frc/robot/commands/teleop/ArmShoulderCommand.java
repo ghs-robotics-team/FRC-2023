@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.misc.InverseKinematics;
 import frc.robot.subsystems.ArmShoulder;
 
 public class ArmShoulderCommand extends CommandBase {
@@ -23,12 +22,10 @@ public class ArmShoulderCommand extends CommandBase {
   private GenericEntry d = tab.add("Shoulder D",1).getEntry();
   private ArmShoulder subsystem;
   private double angleToTickFactor = 42*30*72/22;
-  private InverseKinematics IK;
   private ProfiledPIDController pid = new ProfiledPIDController(0, 0, 0, new Constraints(0.2,0.01));
-  public ArmShoulderCommand(ArmShoulder subsystem, InverseKinematics IK) {
+  public ArmShoulderCommand(ArmShoulder subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subsystem = subsystem;
-    this.IK = IK;
     addRequirements(subsystem);
   }
 
@@ -43,7 +40,7 @@ public class ArmShoulderCommand extends CommandBase {
     pid.setP(p.getDouble(0));
     pid.setI(i.getDouble(0));
     pid.setD(d.getDouble(0));
-    double targetPos = IK.getElbowAngle()*angleToTickFactor;
+    double targetPos = OperatorConstants.ShoulderTargetAngle*angleToTickFactor;
     double speed = pid.calculate(subsystem.getPos(), targetPos);
     subsystem.setSpeed(Math.max(Math.min(speed,0.2),-0.2));
     if(Math.abs(targetPos-subsystem.getPos()) < 2*Math.PI/360*angleToTickFactor){

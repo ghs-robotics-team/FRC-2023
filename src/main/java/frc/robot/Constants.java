@@ -23,5 +23,7 @@ public final class Constants {
     public static final double ElbowD = 0;
     public static boolean ShoulderCorrect = false;
     public static boolean ElbowCorrect = false;
+    public static double ShoulderTargetAngle = 0;
+    public static double ElbowTargetAngle = 0;
   }
 }

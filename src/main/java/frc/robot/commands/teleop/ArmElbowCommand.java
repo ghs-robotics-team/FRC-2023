@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.misc.InverseKinematics;
 import frc.robot.subsystems.ArmElbow;
 
 public class ArmElbowCommand extends CommandBase {
@@ -23,13 +22,11 @@ public class ArmElbowCommand extends CommandBase {
   private GenericEntry d = tab.add("Elbow D",1).getEntry();
   private ArmElbow elbowSubsystem;
   private double angleToTickFactor = 49.0*2048*17/22;
-  private InverseKinematics IK;
   private ProfiledPIDController pid = new ProfiledPIDController(0, 0, 0, new Constraints(0.2,0.01));
-  public ArmElbowCommand(ArmElbow elbow, InverseKinematics IK) {
+  public ArmElbowCommand(ArmElbow elbow) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elbow);
     this.elbowSubsystem = elbow;
-    this.IK = IK;
   }
 
   // Called when the command is initially scheduled.
@@ -42,7 +39,7 @@ public class ArmElbowCommand extends CommandBase {
     pid.setP(p.getDouble(0));
     pid.setI(i.getDouble(0));
     pid.setD(d.getDouble(0));
-    double targetPos = IK.getElbowAngle()*angleToTickFactor;
+    double targetPos = OperatorConstants.ElbowTargetAngle*angleToTickFactor;
     double speed = pid.calculate(elbowSubsystem.getPos(), targetPos);
     elbowSubsystem.setSpeed(Math.max(Math.min(speed,0.2),-0.2));
     SmartDashboard.putNumber("Elbow Target", targetPos);
