@@ -21,7 +21,7 @@ public class ArmElbowCommand extends CommandBase {
   private GenericEntry i = tab.add("Elbow I",1).getEntry();
   private GenericEntry d = tab.add("Elbow D",1).getEntry();
   private ArmElbow elbowSubsystem;
-  private double angleToTickFactor = 49.0*2048*17/22;
+  private double angleToTickFactor = 49.0*2048*18/22;
   private ProfiledPIDController pid = new ProfiledPIDController(0, 0, 0, new Constraints(0.2,0.01));
   public ArmElbowCommand(ArmElbow elbow) {
     // Use addRequirements() here to declare subsystem dependencies.
