@@ -11,6 +11,7 @@ import frc.robot.subsystems.Claw;
 public class ClawCommand extends CommandBase {
   private Joystick controller;
   private Claw subsystem;
+  private double runTimer = 0;
 
   /** Creates a new Claw. */
   public ClawCommand(Claw subsystem, Joystick controller) {
@@ -29,18 +30,21 @@ public class ClawCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     if(controller.getRawAxis(2)>0.1){
       subsystem.openClaw();
     }
     if(controller.getRawAxis(3)>0.1){
       subsystem.closeClaw();
     }
-    if(controller.getPOV()==0){
-      subsystem.killClaw();
+    if(controller.getRawButton(5)){
+      subsystem.openClaw();
+      runTimer = 50;
+      subsystem.run(-1);
     }
-    if(controller.getPOV()==180){
-      subsystem.toggleClaw();
+    if(runTimer > 0){
+      runTimer--;
+    }else{
+      subsystem.run(0.1);
     }
   }
 
