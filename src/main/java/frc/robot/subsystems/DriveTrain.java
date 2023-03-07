@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
@@ -83,7 +84,8 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    odometry.update(gyro.getRotation2d(), ticksToMeters(frontLeft), ticksToMeters(frontRight));
+    odometry.update(gyro.getRotation2d(), -ticksToMeters(frontLeft), -ticksToMeters(frontRight));
     field.setRobotPose(odometry.getPoseMeters());
+    SmartDashboard.putData("Field",field);
   }
 }

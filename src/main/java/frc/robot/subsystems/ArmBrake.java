@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmBrake extends SubsystemBase {
 
-  private DoubleSolenoid shoulderBrake = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 2, 3);
-  private DoubleSolenoid elbowBrake = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 4, 5);
+  private DoubleSolenoid shoulderBrake = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 4, 5);
+  private DoubleSolenoid elbowBrake = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 2, 3);
 
   /** Creates a new Claw. */
   public ArmBrake() {
@@ -20,10 +20,10 @@ public class ArmBrake extends SubsystemBase {
   }
 
   public void brakeShoulder(){
-    shoulderBrake.set(Value.kForward);
+    shoulderBrake.set(Value.kReverse);
   }
   public void releaseShoulder(){
-    shoulderBrake.set(Value.kReverse);
+    shoulderBrake.set(Value.kForward);
   } 
   public void brakeElbow(){
     elbowBrake.set(Value.kForward);
