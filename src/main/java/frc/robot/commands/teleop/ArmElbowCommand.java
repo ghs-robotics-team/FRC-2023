@@ -17,12 +17,15 @@ import frc.robot.subsystems.ArmElbow;
 public class ArmElbowCommand extends CommandBase {
   /** Creates a new ArmElbowCommand. */
   private ShuffleboardTab tab = Shuffleboard.getTab("PID");
-  private GenericEntry p = tab.add("Elbow P",1).getEntry();
+  private GenericEntry p = tab.add("Elbow P",12).getEntry();
   private GenericEntry i = tab.add("Elbow I",1).getEntry();
-  private GenericEntry d = tab.add("Elbow D",1).getEntry();
+  private GenericEntry d = tab.add("Elbow D",0).getEntry();
+  private GenericEntry maxSpeedEntry = tab.add("Max Elbow Speed",0.45).getEntry();
+  private GenericEntry maxAccelEntry = tab.add("Max Elbow Accel",0.5).getEntry();
   private ArmElbow elbowSubsystem;
+  private double maxSpeed = 0.15;
   private double angleToTickFactor = 49.0*2048*18/22;
-  private ProfiledPIDController pid = new ProfiledPIDController(0, 0, 0, new Constraints(0.2,0.01));
+  private ProfiledPIDController pid = new ProfiledPIDController(12, 0, 0, new Constraints(0.25,0.25));
   public ArmElbowCommand(ArmElbow elbow) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elbow);
@@ -36,20 +39,22 @@ public class ArmElbowCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    pid.setConstraints(new Constraints(maxSpeed, maxAccelEntry.getDouble(0.01)));
     pid.setP(p.getDouble(0));
     pid.setI(i.getDouble(0));
     pid.setD(d.getDouble(0));
-    double targetPos = OperatorConstants.ElbowTargetAngle*angleToTickFactor;
-    double speed = pid.calculate(elbowSubsystem.getPos(), targetPos);
-    elbowSubsystem.setSpeed(Math.max(Math.min(speed,0.2),-0.2));
-    SmartDashboard.putNumber("Elbow Target", targetPos);
-    SmartDashboard.putNumber("Elbow Position", elbowSubsystem.getPos());
-    SmartDashboard.putNumber("Elbow PID Speed Output", speed);
-    if(Math.abs(targetPos-elbowSubsystem.getPos()) < 2*Math.PI/360*angleToTickFactor){
+    maxSpeed = maxSpeedEntry.getDouble(0.15);
+    double targetPos = OperatorConstants.ElbowTargetAngle;
+    double speed = pid.calculate(elbowSubsystem.getPos()/angleToTickFactor, targetPos);
+    elbowSubsystem.setSpeed(Math.max(Math.min(speed,maxSpeed),-maxSpeed));
+    if(Math.abs(targetPos-elbowSubsystem.getPos()/angleToTickFactor) < 2*Math.PI/360){
       OperatorConstants.ShoulderCorrect = true;
     }else{
       OperatorConstants.ShoulderCorrect = false;
     }
+    SmartDashboard.putNumber("Elbow Target", targetPos);
+    SmartDashboard.putNumber("Elbow Position", elbowSubsystem.getPos()/angleToTickFactor);
+    SmartDashboard.putNumber("Elbow PID Speed Output", speed);
   }
 
   // Called once the command ends or is interrupted.

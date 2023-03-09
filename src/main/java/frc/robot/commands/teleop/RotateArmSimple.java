@@ -5,30 +5,22 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmElbow;
-import frc.robot.subsystems.ArmShoulder;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmBrake;
 
 
 public class RotateArmSimple extends CommandBase {
-  private double elbowAngleToTickFactor = 49.0*2048*18/22;
-  private double shoulderAngleToTickFactor = 42*30*72/22;
   /** Creates a new MoveArmCommand. */
   private Joystick secondary;
-  private ArmElbow elbowSubsystem;
-  private ArmShoulder shoulderSubsystem;
   private ArmBrake brakeSubsystem;
 
-  public RotateArmSimple(ArmElbow elbowSubsystem, ArmShoulder shoulderSubsystem, ArmBrake brakeSubsystem, Joystick secondary) {
+  public RotateArmSimple(ArmBrake brakeSubsystem, Joystick secondary) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.brakeSubsystem = brakeSubsystem;
-    this.elbowSubsystem = elbowSubsystem;
-    this.shoulderSubsystem = shoulderSubsystem;
     this.secondary = secondary;
 
-    addRequirements(this.elbowSubsystem, this.shoulderSubsystem, this.brakeSubsystem);
+    addRequirements(this.brakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -38,25 +30,24 @@ public class RotateArmSimple extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(secondary.getRawAxis(0))<0.1){
-      brakeSubsystem.brakeElbow();
-    }else{
-      brakeSubsystem.releaseElbow();
+    brakeSubsystem.releaseElbow();
+    brakeSubsystem.releaseShoulder();
+    double elbowInput = secondary.getRawAxis(0);
+    if(Math.abs(elbowInput) < 0.2){
+      elbowInput = 0;
     }
-    if(Math.abs(secondary.getRawAxis(4))<0.1){
-      brakeSubsystem.brakeShoulder();
-    }else{
-      brakeSubsystem.releaseShoulder();
+    double shoulderInput = secondary.getRawAxis(4);
+    if(Math.abs(shoulderInput) < 0.2){
+      shoulderInput = 0;
     }
-    elbowSubsystem.setSpeed(secondary.getRawAxis(0)*.15);
-    shoulderSubsystem.setSpeed(secondary.getRawAxis(4)*0.15);
-    SmartDashboard.putNumber("elbow position",elbowSubsystem.getPos()/elbowAngleToTickFactor);
-    SmartDashboard.putNumber("shoulder position",shoulderSubsystem.getPos()/shoulderAngleToTickFactor);
+    OperatorConstants.ElbowTargetAngle+=-elbowInput*0.03490658503988659153847381536977/3;
+    OperatorConstants.ShoulderTargetAngle+=shoulderInput*0.03490658503988659153847381536977/8;
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

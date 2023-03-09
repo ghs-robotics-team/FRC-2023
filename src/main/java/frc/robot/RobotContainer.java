@@ -3,7 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import frc.robot.commands.teleop.ArmElbowCommand;
+import frc.robot.commands.teleop.ArmShoulderCommand;
 import frc.robot.commands.teleop.ClawCommand;
+import frc.robot.commands.teleop.MoveArmCommand;
 import frc.robot.commands.teleop.RotateArmSimple;
 import frc.robot.commands.teleop.TankDrive;
 import frc.robot.helper.AutoType;
@@ -56,10 +59,10 @@ public class RobotContainer {
   //private InverseKinematics IK = new InverseKinematics();
 
   //Commands
-  //private MoveArmCommand moveArmCommand = new MoveArmCommand(IK, secondarycontroller);
-  //private ArmShoulderCommand armPivotCommand = new ArmShoulderCommand(armPivot, IK);
-  //private ArmElbowCommand armElbowCommand = new ArmElbowCommand(armElbow, IK);
-  private RotateArmSimple rotateArmSimple = new RotateArmSimple(armElbow, armPivot, armBrake, secondarycontroller);
+  private MoveArmCommand moveArmCommand = new MoveArmCommand(secondarycontroller, claw);
+  private ArmShoulderCommand armPivotCommand = new ArmShoulderCommand(armPivot);
+  private ArmElbowCommand armElbowCommand = new ArmElbowCommand(armElbow);
+  private RotateArmSimple rotateArmSimple = new RotateArmSimple(armBrake, secondarycontroller);
   private ClawCommand clawCommand = new ClawCommand(claw, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
   
@@ -157,8 +160,9 @@ public class RobotContainer {
   }
 
   public void setup(){
-    //armElbow.setDefaultCommand(armElbowCommand);
-    //armPivot.setDefaultCommand(armPivotCommand);
+    armElbow.setDefaultCommand(armElbowCommand);
+    armPivot.setDefaultCommand(armPivotCommand);
+    moveArmCommand.schedule();
     claw.setDefaultCommand(clawCommand);
     driveTrain.setDefaultCommand(tankDrive);
     rotateArmSimple.schedule();

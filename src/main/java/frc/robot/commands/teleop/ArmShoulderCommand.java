@@ -17,12 +17,15 @@ import frc.robot.subsystems.ArmShoulder;
 public class ArmShoulderCommand extends CommandBase {
   /** Creates a new ArmPivotCommand. */
   private ShuffleboardTab tab = Shuffleboard.getTab("PID");
-  private GenericEntry p = tab.add("Shoulder P",1).getEntry();
-  private GenericEntry i = tab.add("Shoulder I",1).getEntry();
-  private GenericEntry d = tab.add("Shoulder D",1).getEntry();
+  private GenericEntry p = tab.add("Shoulder P",20).getEntry();
+  private GenericEntry i = tab.add("Shoulder I",2).getEntry();
+  private GenericEntry d = tab.add("Shoulder D",0).getEntry();
+  private GenericEntry maxSpeedEntry = tab.add("Max Speed",0.5).getEntry();
+  private GenericEntry maxAccelEntry = tab.add("Max Accel",1).getEntry();
+  private double maxSpeed = 0.15;
   private ArmShoulder subsystem;
   private double angleToTickFactor = 42*30*72/22;
-  private ProfiledPIDController pid = new ProfiledPIDController(0, 0, 0, new Constraints(0.2,0.01));
+  private ProfiledPIDController pid = new ProfiledPIDController(50, 2, 0, new Constraints(0.5,1));
   public ArmShoulderCommand(ArmShoulder subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subsystem = subsystem;
@@ -37,19 +40,21 @@ public class ArmShoulderCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    pid.setConstraints(new Constraints(maxSpeed, maxAccelEntry.getDouble(0.01)));
     pid.setP(p.getDouble(0));
     pid.setI(i.getDouble(0));
     pid.setD(d.getDouble(0));
-    double targetPos = OperatorConstants.ShoulderTargetAngle*angleToTickFactor;
-    double speed = pid.calculate(subsystem.getPos(), targetPos);
-    subsystem.setSpeed(Math.max(Math.min(speed,0.2),-0.2));
-    if(Math.abs(targetPos-subsystem.getPos()) < 2*Math.PI/360*angleToTickFactor){
+    maxSpeed = maxSpeedEntry.getDouble(0);
+    double targetPos = OperatorConstants.ShoulderTargetAngle;
+    double speed = pid.calculate(subsystem.getPos()/angleToTickFactor, targetPos);
+    subsystem.setSpeed(Math.max(Math.min(speed,maxSpeed),-maxSpeed));
+    if(Math.abs(targetPos-subsystem.getPos()/angleToTickFactor) < 2*Math.PI/360){
       OperatorConstants.ShoulderCorrect = true;
     }else{
       OperatorConstants.ShoulderCorrect = false;
     }
     SmartDashboard.putNumber("Shoulder Target", targetPos);
-    SmartDashboard.putNumber("Shoulder Position", subsystem.getPos());
+    SmartDashboard.putNumber("Shoulder Position", subsystem.getPos()/angleToTickFactor);
     SmartDashboard.putNumber("Shoulder PID Speed Output", speed);
   }
 
