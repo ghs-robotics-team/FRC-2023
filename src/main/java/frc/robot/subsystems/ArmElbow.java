@@ -12,11 +12,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmElbow extends SubsystemBase {
   private TalonFX elbowMotor = new TalonFX(5);
+  private TalonFX elbowMotor2 = new TalonFX(9);
   /** Creates a new ArmElbow. */
   public ArmElbow() {
     elbowMotor.setNeutralMode(NeutralMode.Brake);
     elbowMotor.setSensorPhase(false);
     elbowMotor.setSelectedSensorPosition(0);
+    elbowMotor2.setInverted(true);
+    elbowMotor2.follow(elbowMotor);
   }
 
   public double getPos(){
