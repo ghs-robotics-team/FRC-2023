@@ -24,7 +24,7 @@ public class ArmElbowCommand extends CommandBase {
   private GenericEntry maxAccelEntry = tab.add("Max Elbow Accel",0.5).getEntry();
   private ArmElbow elbowSubsystem;
   private double maxSpeed = 0.15;
-  private double angleToTickFactor = 49.0*2048*18/22;
+  private double angleToTickFactor = OperatorConstants.AngleToTickElbow;
   private ProfiledPIDController pid = new ProfiledPIDController(12, 0, 0, new Constraints(0.25,0.25));
   public ArmElbowCommand(ArmElbow elbow) {
     // Use addRequirements() here to declare subsystem dependencies.

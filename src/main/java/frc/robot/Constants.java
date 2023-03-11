@@ -25,5 +25,8 @@ public final class Constants {
     public static boolean ElbowCorrect = false;
     public static double ShoulderTargetAngle = 0;
     public static double ElbowTargetAngle = 0;
+    //ticks = angle * rotations/rad * ticks/rotation * outersprocket/innersprocket * gearboxratio
+    public static double AngleToTickShoulder = (1/(2*Math.PI))*42*(72/22)*30;
+    public static double AngleToTickElbow = (1/(2*Math.PI))*2048*(22/18)*100;
   }
 }

@@ -162,7 +162,7 @@ public class RobotContainer {
   public void setup(){
     armElbow.setDefaultCommand(armElbowCommand);
     armPivot.setDefaultCommand(armPivotCommand);
-    moveArmCommand.schedule();
+    //moveArmCommand.schedule();
     claw.setDefaultCommand(clawCommand);
     driveTrain.setDefaultCommand(tankDrive);
     rotateArmSimple.schedule();

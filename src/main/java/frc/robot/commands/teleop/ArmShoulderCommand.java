@@ -24,7 +24,7 @@ public class ArmShoulderCommand extends CommandBase {
   private GenericEntry maxAccelEntry = tab.add("Max Accel",1).getEntry();
   private double maxSpeed = 0.15;
   private ArmShoulder subsystem;
-  private double angleToTickFactor = 42*30*72/22;
+  private double angleToTickFactor = OperatorConstants.AngleToTickShoulder;
   private ProfiledPIDController pid = new ProfiledPIDController(50, 2, 0, new Constraints(0.5,1));
   public ArmShoulderCommand(ArmShoulder subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.

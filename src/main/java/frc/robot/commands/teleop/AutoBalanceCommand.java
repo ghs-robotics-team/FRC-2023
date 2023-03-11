@@ -40,15 +40,11 @@ public class AutoBalanceCommand extends CommandBase {
       balance.reset(); 
       calibrated = true;
     }
-    balance.controller.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    balance.controller.kp = pEntry.getDouble(0);
-    balance.controller.ki = iEntry.getDouble(0);
-    balance.controller.kd = dEntry.getDouble(0);
     double pitch = gyro.getRoll() - balance.zero;
     SmartDashboard.putNumber("Pitch", pitch);
     double speed = filter.calculate(Math.min(Math.max(balance.out, -0.3), 0.3));
