@@ -47,9 +47,9 @@ public class RobotContainer {
   private ArmBrake armBrake = new ArmBrake();
 
   //Trajectories
-  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(4, 3));
-  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(4, 3));
-  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(4, 3));
+  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(1, 1));
+  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(1, 1));
+  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(1, 1));
 
   //Joysticks
   private Joystick joystick_left = new Joystick(0);
