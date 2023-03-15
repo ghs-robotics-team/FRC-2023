@@ -17,11 +17,11 @@ import frc.robot.subsystems.ArmElbow;
 public class ArmElbowCommand extends CommandBase {
   /** Creates a new ArmElbowCommand. */
   private ShuffleboardTab tab = Shuffleboard.getTab("PID");
-  private GenericEntry p = tab.add("Elbow P",12).getEntry();
-  private GenericEntry i = tab.add("Elbow I",1).getEntry();
+  private GenericEntry p = tab.add("Elbow P",6).getEntry();
+  private GenericEntry i = tab.add("Elbow I",0).getEntry();
   private GenericEntry d = tab.add("Elbow D",0).getEntry();
-  private GenericEntry maxSpeedEntry = tab.add("Max Elbow Speed",0.45).getEntry();
-  private GenericEntry maxAccelEntry = tab.add("Max Elbow Accel",0.5).getEntry();
+  private GenericEntry maxSpeedEntry = tab.add("Max Elbow Speed",0.6).getEntry();
+  private GenericEntry maxAccelEntry = tab.add("Max Elbow Accel",0.7).getEntry();
   private ArmElbow elbowSubsystem;
   private double maxSpeed = 0.15;
   private double angleToTickFactor = OperatorConstants.AngleToTickElbow;
@@ -39,6 +39,9 @@ public class ArmElbowCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(OperatorConstants.ElbowTargetAngle < 0.11){
+      OperatorConstants.ElbowTargetAngle = 0.11;
+    }
     pid.setConstraints(new Constraints(maxSpeed, maxAccelEntry.getDouble(0.01)));
     pid.setP(p.getDouble(0));
     pid.setI(i.getDouble(0));

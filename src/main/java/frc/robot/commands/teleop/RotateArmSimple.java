@@ -40,8 +40,8 @@ public class RotateArmSimple extends CommandBase {
     if(Math.abs(shoulderInput) < 0.2){
       shoulderInput = 0;
     }
-    OperatorConstants.ElbowTargetAngle+=-elbowInput*0.03490658503988659153847381536977/3;
-    OperatorConstants.ShoulderTargetAngle+=shoulderInput*0.03490658503988659153847381536977/8;
+    OperatorConstants.ElbowTargetAngle+=elbowInput*0.03490658503988659153847381536977/3;
+    OperatorConstants.ShoulderTargetAngle+=shoulderInput*0.03490658503988659153847381536977/3;
   }
 
   // Called once the command ends or is interrupted.

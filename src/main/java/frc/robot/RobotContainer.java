@@ -5,7 +5,6 @@
 package frc.robot;
 import frc.robot.commands.teleop.ArmElbowCommand;
 import frc.robot.commands.teleop.ArmShoulderCommand;
-import frc.robot.commands.teleop.ClawCommand;
 import frc.robot.commands.teleop.MoveArmCommand;
 import frc.robot.commands.teleop.RotateArmSimple;
 import frc.robot.commands.teleop.TankDrive;
@@ -26,6 +25,7 @@ import com.pathplanner.lib.auto.RamseteAutoBuilder;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -45,11 +45,12 @@ public class RobotContainer {
   private DriveTrain driveTrain = new DriveTrain();
   private ArmElbow armElbow = new ArmElbow();
   private ArmBrake armBrake = new ArmBrake();
+  private SendableChooser<Command> chooser = new SendableChooser<>();
 
   //Trajectories
-  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(1, 1));
-  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(1, 1));
-  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(1, 1));
+  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(0.1, 0.1));
+  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(0.1, 0.1));
+  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(0.1, 0.1));
 
   //Joysticks
   private Joystick joystick_left = new Joystick(0);
@@ -63,7 +64,6 @@ public class RobotContainer {
   private ArmShoulderCommand armPivotCommand = new ArmShoulderCommand(armPivot);
   private ArmElbowCommand armElbowCommand = new ArmElbowCommand(armElbow);
   private RotateArmSimple rotateArmSimple = new RotateArmSimple(armBrake, secondarycontroller);
-  private ClawCommand clawCommand = new ClawCommand(claw, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
   
   private HashMap<String, Command> eventMap;
@@ -71,6 +71,7 @@ public class RobotContainer {
   private Command bottomAuto;
   private Command midAuto;
   private Command topAuto;
+  private Command basicAuto;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -142,6 +143,13 @@ public class RobotContainer {
     bottomAuto = autoBuilder.fullAuto(bottomBluePath);
     midAuto = autoBuilder.fullAuto(midBluePath);
     topAuto = autoBuilder.fullAuto(topBluePath);
+    basicAuto = new WaitCommand(15);
+
+    chooser.setDefaultOption("Top Auto", topAuto);
+    chooser.addOption("Mid Auto", midAuto);
+    chooser.addOption("Bottom Auto", bottomAuto);
+    chooser.addOption("No Auto", new WaitCommand(15));
+    chooser.addOption("Basic Auto", basicAuto);
   }
 
   /**
@@ -162,8 +170,7 @@ public class RobotContainer {
   public void setup(){
     armElbow.setDefaultCommand(armElbowCommand);
     armPivot.setDefaultCommand(armPivotCommand);
-    //moveArmCommand.schedule();
-    claw.setDefaultCommand(clawCommand);
+    moveArmCommand.schedule();
     driveTrain.setDefaultCommand(tankDrive);
     rotateArmSimple.schedule();
   }

@@ -18,13 +18,14 @@ public class Claw extends SubsystemBase {
   private DoubleSolenoid claw = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 0, 1);
   private CANSparkMax leftMotor = new CANSparkMax(7, MotorType.kBrushless);
   private CANSparkMax rightMotor = new CANSparkMax(8, MotorType.kBrushless);
-  private double runSpeed = 0.1;
+  private double runSpeed = 0;
 
   /** Creates a new Claw. */
   public Claw() {
     leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
     //Flip motors here if they are opposite
+    leftMotor.setInverted(true);
   }
 
   public void openClaw(){
@@ -43,7 +44,6 @@ public class Claw extends SubsystemBase {
   public void toggleClaw(){
     claw.toggle();
   }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

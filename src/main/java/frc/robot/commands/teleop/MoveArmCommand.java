@@ -5,6 +5,7 @@
 package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.helper.SetPoints;
@@ -17,6 +18,7 @@ public class MoveArmCommand extends CommandBase {
   private Claw claw;
   private boolean toggle = false;
   private boolean pressed = false;
+  private double runTimer = 0;
   public MoveArmCommand(Joystick secondary, Claw claw) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.secondary = secondary;
@@ -34,45 +36,45 @@ public class MoveArmCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(secondary.getPOV() == 90 && setPoint != SetPoints.GrabIntake){
+    if(secondary.getPOV() == 90){
       setPoint = SetPoints.Home;//dpad right
-      claw.run(0.1);
+      claw.run(0);
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 270){
       setPoint = SetPoints.GrabIntake;//dpad left
-      claw.run(1);
+      claw.run(-0.3);
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 180){
       setPoint = SetPoints.GrabGround;//dpad down
-      claw.run(1);
+      claw.run(-0.3);
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 0){
       setPoint = SetPoints.GrabSubstation;//dpad up
-      claw.run(1);
+      claw.run(-0.3);
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
     if(secondary.getRawButton(4)){
       setPoint = SetPoints.PlaceHigh;//y button
-      claw.run(0.1);
+      claw.run(0);
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
     if(secondary.getRawButton(2)){
       setPoint = SetPoints.PlaceMid;//b button
-      claw.run(0.1);
+      claw.run(0);
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
     if(secondary.getRawButton(1)){
       setPoint = SetPoints.PlaceLow;//a button
-      claw.run(0.1);
+      claw.run(0);
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
@@ -82,7 +84,28 @@ public class MoveArmCommand extends CommandBase {
       OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
     }
+    SmartDashboard.putBoolean("Cone Mode", !SetPoints.cubeMode);
     toggle = secondary.getRawButton(3);
+    if(secondary.getRawAxis(2)>0.1){
+      claw.openClaw();
+    }
+    if(secondary.getRawAxis(3)>0.1){
+      claw.closeClaw();
+    }
+    if(secondary.getRawButton(5)){
+      claw.openClaw();
+      runTimer = 50;
+      claw.run(0.2);
+    }
+    if(secondary.getRawButton(6)){
+      claw.run(0);
+    }
+    if(runTimer > 0){
+      runTimer--;
+    }else if(runTimer == 0){
+      runTimer--;
+      claw.run(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
