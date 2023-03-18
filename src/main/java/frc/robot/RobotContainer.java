@@ -49,9 +49,9 @@ public class RobotContainer {
   private SendableChooser<Command> chooser = new SendableChooser<>();
 
   //Trajectories
-  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(0.1, 0.1));
-  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(0.1, 0.1));
-  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(0.1, 0.1));
+  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(0.5, 0.5));
+  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(0.5, 0.5));
+  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(0.5, 0.5));
 
   //Joysticks
   private Joystick joystick_left = new Joystick(0);
@@ -140,7 +140,7 @@ public class RobotContainer {
     //new SetArmPointCommand(SetPoints.Home);
 
     autoBuilder = new RamseteAutoBuilder(
-      driveTrain::getPose, driveTrain::resetPose, new RamseteController(), driveTrain.getKinematics(), driveTrain::tankdriveVelocity, eventMap, true, driveTrain
+      driveTrain::getPose, driveTrain::resetPose, new RamseteController(2,0.7), driveTrain.getKinematics(), driveTrain::tankdriveVelocity, eventMap, true, driveTrain
     );
 
     bottomAuto = autoBuilder.fullAuto(bottomBluePath);
@@ -194,6 +194,10 @@ public class RobotContainer {
     if(type == AutoType.Top){
       return topAuto;
     }
-    return new WaitCommand(15);
+    return bottomAuto;
+  }
+
+  public DriveTrain getDrivetrain(){
+    return driveTrain;
   }
 }

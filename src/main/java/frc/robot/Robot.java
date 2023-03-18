@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.server.PathPlannerServer;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -33,6 +38,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    PathPlannerServer.startServer(5811);
+    
   }
 
   /**
@@ -61,15 +68,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    if(autoMode.getDouble(1) == AutoType.Bottom.id){
-      m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Bottom);
-    }else if(autoMode.getDouble(1) == AutoType.Middle.id){
-      m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Middle);
-    }else if(autoMode.getDouble(1) == AutoType.Top.id){
-      m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Top);
-    }else{
-      m_autonomousCommand = null;
-    }
+    m_robotContainer.getDrivetrain().resetPose(new Pose2d(0,0,Rotation2d.fromDegrees(0)));
+
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Bottom);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
