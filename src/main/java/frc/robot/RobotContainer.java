@@ -3,8 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import frc.robot.commands.teleop.ArmElbowCommand;
-import frc.robot.commands.teleop.ArmShoulderCommand;
+import frc.robot.commands.misc.ArmElbowCommand;
+import frc.robot.commands.misc.ArmShoulderCommand;
 import frc.robot.commands.teleop.MoveArmCommand;
 import frc.robot.commands.teleop.RotateArmSimple;
 import frc.robot.commands.teleop.TankDrive;
@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -56,6 +57,8 @@ public class RobotContainer {
   private Joystick joystick_left = new Joystick(0);
   private Joystick joystick_right = new Joystick(1);
   private Joystick secondarycontroller = new Joystick(2);
+
+  JoystickButton rightTrigger = new JoystickButton(joystick_right, 1);
 
   //private InverseKinematics IK = new InverseKinematics();
 

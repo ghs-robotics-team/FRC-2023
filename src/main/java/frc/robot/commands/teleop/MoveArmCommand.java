@@ -14,7 +14,6 @@ import frc.robot.subsystems.Claw;
 public class MoveArmCommand extends CommandBase {
   /** Creates a new MoveArmCommand. */
   private Joystick secondary;
-  private SetPoints setPoint = SetPoints.Home;
   private Claw claw;
   private boolean toggle = false;
   private boolean pressed = false;
@@ -29,60 +28,60 @@ public class MoveArmCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
-    OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
+    OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
+    OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(secondary.getPOV() == 90){
-      setPoint = SetPoints.Home;//dpad right
+      OperatorConstants.armSetPoint = SetPoints.Home;//dpad right
       claw.run(0);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 270){
-      setPoint = SetPoints.GrabIntake;//dpad left
+      OperatorConstants.armSetPoint = SetPoints.GrabIntake;//dpad left
       claw.run(-0.3);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 180){
-      setPoint = SetPoints.GrabGround;//dpad down
+      OperatorConstants.armSetPoint = SetPoints.GrabGround;//dpad down
       claw.run(-0.3);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 0){
-      setPoint = SetPoints.GrabSubstation;//dpad up
+      OperatorConstants.armSetPoint = SetPoints.GrabSubstation;//dpad up
       claw.run(-0.3);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getRawButton(4)){
-      setPoint = SetPoints.PlaceHigh;//y button
+      OperatorConstants.armSetPoint = SetPoints.PlaceHigh;//y button
       claw.run(0);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getRawButton(2)){
-      setPoint = SetPoints.PlaceMid;//b button
+      OperatorConstants.armSetPoint = SetPoints.PlaceMid;//b button
       claw.run(0);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getRawButton(1)){
-      setPoint = SetPoints.PlaceLow;//a button
+      OperatorConstants.armSetPoint = SetPoints.PlaceLow;//a button
       claw.run(0);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getRawButton(3) && !toggle){
       pressed = !pressed;
       SetPoints.setCubeMode(pressed);
-      OperatorConstants.ShoulderTargetAngle = setPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = setPoint.getElbowAngle();
+      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
+      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     SmartDashboard.putBoolean("Cone Mode", !SetPoints.cubeMode);
     toggle = secondary.getRawButton(3);

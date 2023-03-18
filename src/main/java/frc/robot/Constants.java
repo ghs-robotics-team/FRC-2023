@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.helper.SetPoints;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -28,5 +30,6 @@ public final class Constants {
     //ticks = angle * rotations/rad * ticks/rotation * outersprocket/innersprocket * gearboxratio
     public static double AngleToTickShoulder = (1/(2*Math.PI))*42*(72/22)*30;
     public static double AngleToTickElbow = (1/(2*Math.PI))*2048*(22/18)*100;
+    public static SetPoints armSetPoint = SetPoints.Home;
   }
 }
