@@ -94,7 +94,7 @@ public class MoveArmCommand extends CommandBase {
     if(secondary.getRawButton(5)){
       claw.openClaw();
       runTimer = 50;
-      claw.run(0.2);
+      claw.run(0.1);
     }
     if(secondary.getRawButton(6)){
       claw.run(0);

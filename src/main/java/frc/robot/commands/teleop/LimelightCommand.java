@@ -51,8 +51,14 @@ public class LimelightCommand extends CommandBase {
       //Align High
       if(SetPoints.cubeMode){
         //Front April Tag
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 0){
+          limelightFront.getEntry("pipeline").setDouble(0);
+        }
       }else{
         //Front Top Tape
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 3){
+          limelightFront.getEntry("pipeline").setDouble(3);
+        }
         double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
         speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
         drive.tankdrive(-speed, speed);
@@ -62,8 +68,14 @@ public class LimelightCommand extends CommandBase {
       //Align Mid
       if(SetPoints.cubeMode){
         //Front April Tag
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 0){
+          limelightFront.getEntry("pipeline").setDouble(0);
+        }
       }else{
         //Front Bottom Tape
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 4){
+          limelightFront.getEntry("pipeline").setDouble(4);
+        }
         double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
         speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
         drive.tankdrive(-speed, speed);
@@ -73,11 +85,17 @@ public class LimelightCommand extends CommandBase {
       //Align Grab Ground Front
       if(SetPoints.cubeMode){
         //Front Cube
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 1){
+          limelightFront.getEntry("pipeline").setDouble(1);
+        }
         double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
         speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
         drive.tankdrive(-speed, speed);
       }else{
         //Front Cone
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 2){
+          limelightFront.getEntry("pipeline").setDouble(2);
+        }
         double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
         speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
         drive.tankdrive(-speed, speed);
@@ -95,11 +113,17 @@ public class LimelightCommand extends CommandBase {
       //Align Grab Substation
       if(SetPoints.cubeMode){
         //Front Cube
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 1){
+          limelightFront.getEntry("pipeline").setDouble(1);
+        }
         double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
         speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
         drive.tankdrive(-speed, speed);
       }else{
         //Front Cone
+        if(limelightFront.getEntry("pipeline").getDouble(0) != 2){
+          limelightFront.getEntry("pipeline").setDouble(2);
+        }
         double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
         speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
         drive.tankdrive(-speed, speed);

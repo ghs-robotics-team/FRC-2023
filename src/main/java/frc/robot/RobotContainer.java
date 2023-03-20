@@ -48,11 +48,6 @@ public class RobotContainer {
   private ArmBrake armBrake = new ArmBrake();
   private SendableChooser<Command> chooser = new SendableChooser<>();
 
-  //Trajectories
-  private List<PathPlannerTrajectory> bottomBluePath = PathPlanner.loadPathGroup("BottomBlue", new PathConstraints(0.5, 0.5));
-  private List<PathPlannerTrajectory> midBluePath = PathPlanner.loadPathGroup("MidBlue", new PathConstraints(0.5, 0.5));
-  private List<PathPlannerTrajectory> topBluePath = PathPlanner.loadPathGroup("TopBlue", new PathConstraints(0.5, 0.5));
-
   //Joysticks
   private Joystick joystick_left = new Joystick(0);
   private Joystick joystick_right = new Joystick(1);
@@ -69,90 +64,15 @@ public class RobotContainer {
   private RotateArmSimple rotateArmSimple = new RotateArmSimple(armBrake, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
   
-  private HashMap<String, Command> eventMap;
-  private RamseteAutoBuilder autoBuilder;
-  private Command bottomAuto;
-  private Command midAuto;
-  private Command topAuto;
-  private Command basicAuto;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    eventMap = new HashMap<>();
-
-    eventMap.put("PlaceConeBottom1",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceHigh); - also run claw motors while doing this
-    //new OpenClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-    
-    eventMap.put("PlaceCubeBottom",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCubeAuto); - also run claw motors while doing this
-    //new OpenClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("PlaceConeBottom2",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCone2Auto); - also run claw motors while doing this
-    //new OpenClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("PlaceConeMid",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceHigh); - also run claw motors while doing this
-    //new OpenClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("AutoBalance",new WaitCommand(1));
-    //new AutoBalanceCommand(driveTrain);
-
-    eventMap.put("PlaceConeTop1",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceHigh); - also run claw motors while doing this
-    //new OpenClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("PlaceCubeTop",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCubeAuto); - also run claw motors while doing this
-    //new OpenClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("PlaceConeTop2",new WaitCommand(1.6));
-    //new SetArmPointCommand(SetPoints.PlaceCone2Auto); - also run claw motors while doing this
-    //new OpenClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("GrabCubeBottom",new WaitCommand(2));
-    //new SetArmPointCommand(SetPoints.GrabCubeAuto);
-    //new CloseClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("GrabConeBottom",new WaitCommand(2));
-    //new SetArmPointCommand(SetPoints.Intake);
-    //new CloseClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("GrabCubeTop",new WaitCommand(2));
-    //new SetArmPointCommand(SetPoints.GrabCubeAuto);
-    //new CloseClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    eventMap.put("GrabConeTop",new WaitCommand(2));
-    //new SetArmPointCommand(SetPoints.Intake);
-    //new CloseClawCommand(claw);
-    //new SetArmPointCommand(SetPoints.Home);
-
-    autoBuilder = new RamseteAutoBuilder(
-      driveTrain::getPose, driveTrain::resetPose, new RamseteController(2,0.7), driveTrain.getKinematics(), driveTrain::tankdriveVelocity, eventMap, true, driveTrain
-    );
-
-    bottomAuto = autoBuilder.fullAuto(bottomBluePath);
-    midAuto = autoBuilder.fullAuto(midBluePath);
-    topAuto = autoBuilder.fullAuto(topBluePath);
-    basicAuto = new WaitCommand(15);
-
-    chooser.setDefaultOption("Top Auto", topAuto);
-    chooser.addOption("Mid Auto", midAuto);
-    chooser.addOption("Bottom Auto", bottomAuto);
-    chooser.addOption("No Auto", new WaitCommand(15));
-    chooser.addOption("Basic Auto", basicAuto);
+    // chooser.setDefaultOption("Top Auto", topAuto);
+    // chooser.addOption("Mid Auto", midAuto);
+    // chooser.addOption("Bottom Auto", bottomAuto);
+    // chooser.addOption("No Auto", new WaitCommand(15));
+    // chooser.addOption("Basic Auto", basicAuto);
   }
 
   /**
@@ -185,16 +105,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand(AutoType type) {
     // An example command will be run in autonomous
-    if(type == AutoType.Bottom){
-      return bottomAuto;
-    }
-    if(type == AutoType.Middle){
-      return midAuto;
-    }
-    if(type == AutoType.Top){
-      return topAuto;
-    }
-    return bottomAuto;
+    return new WaitCommand(15);
   }
 
   public DriveTrain getDrivetrain(){
