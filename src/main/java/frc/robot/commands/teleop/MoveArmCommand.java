@@ -43,19 +43,25 @@ public class MoveArmCommand extends CommandBase {
     }
     if(secondary.getPOV() == 270){
       OperatorConstants.armSetPoint = SetPoints.GrabIntake;//dpad left
-      claw.run(-0.3);
+      if(SetPoints.cubeMode){
+        claw.run(-0.3);
+      }
       OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 180){
       OperatorConstants.armSetPoint = SetPoints.GrabGround;//dpad down
-      claw.run(-0.3);
+      if(SetPoints.cubeMode){
+        claw.run(-0.3);
+      }
       OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 0){
       OperatorConstants.armSetPoint = SetPoints.GrabSubstation;//dpad up
-      claw.run(-0.3);
+      if(SetPoints.cubeMode){
+        claw.run(-0.3);
+      }
       OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
@@ -80,6 +86,9 @@ public class MoveArmCommand extends CommandBase {
     if(secondary.getRawButton(3) && !toggle){
       pressed = !pressed;
       SetPoints.setCubeMode(pressed);
+      if(!pressed){
+        claw.run(0);
+      }
       OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }

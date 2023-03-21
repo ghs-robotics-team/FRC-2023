@@ -58,10 +58,11 @@ public class LimelightCommand extends CommandBase {
         //Front Top Tape
         if(limelightFront.getEntry("pipeline").getDouble(0) != 3){
           limelightFront.getEntry("pipeline").setDouble(3);
+        }else{
+          double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
+          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          drive.tankdrive(-speed, speed);
         }
-        double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-        speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
-        drive.tankdrive(-speed, speed);
       }
     }
     if(OperatorConstants.armSetPoint == SetPoints.PlaceMid){
@@ -75,10 +76,11 @@ public class LimelightCommand extends CommandBase {
         //Front Bottom Tape
         if(limelightFront.getEntry("pipeline").getDouble(0) != 4){
           limelightFront.getEntry("pipeline").setDouble(4);
+        }else{
+          double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
+          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          drive.tankdrive(-speed, speed);
         }
-        double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-        speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
-        drive.tankdrive(-speed, speed);
       }
     }
     if(OperatorConstants.armSetPoint == SetPoints.GrabGround){
@@ -87,18 +89,20 @@ public class LimelightCommand extends CommandBase {
         //Front Cube
         if(limelightFront.getEntry("pipeline").getDouble(0) != 1){
           limelightFront.getEntry("pipeline").setDouble(1);
+        }else{
+          double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
+          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          drive.tankdrive(-speed, speed);
         }
-        double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-        speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
-        drive.tankdrive(-speed, speed);
       }else{
         //Front Cone
         if(limelightFront.getEntry("pipeline").getDouble(0) != 2){
           limelightFront.getEntry("pipeline").setDouble(2);
+        }else{
+          double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
+          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          drive.tankdrive(-speed, speed);
         }
-        double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-        speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
-        drive.tankdrive(-speed, speed);
       }
     }
     if(OperatorConstants.armSetPoint == SetPoints.GrabIntake){
@@ -115,18 +119,25 @@ public class LimelightCommand extends CommandBase {
         //Front Cube
         if(limelightFront.getEntry("pipeline").getDouble(0) != 1){
           limelightFront.getEntry("pipeline").setDouble(1);
+        }else{
+          double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
+          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          drive.tankdrive(-speed, speed);
         }
-        double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-        speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
-        drive.tankdrive(-speed, speed);
       }else{
         //Front Cone
         if(limelightFront.getEntry("pipeline").getDouble(0) != 2){
           limelightFront.getEntry("pipeline").setDouble(2);
+        }else{
+          double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
+          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          drive.tankdrive(-speed, speed);
         }
-        double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-        speed = Math.copySign(Math.max(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
-        drive.tankdrive(-speed, speed);
+      }
+    }
+    if(OperatorConstants.armSetPoint == SetPoints.Home){
+      if(limelightFront.getEntry("pipeline").getDouble(0) != 5){
+        limelightFront.getEntry("pipeline").setDouble(5);
       }
     }
   }
