@@ -6,14 +6,9 @@ package frc.robot.commands.teleop;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.helper.SetPoints;
 import frc.robot.subsystems.DriveTrain;
@@ -25,13 +20,8 @@ public class LimelightCommand extends CommandBase {
   private NetworkTable limelightFront = NetworkTableInstance.getDefault().getTable("limelight-front");
   private NetworkTable limelightBack = NetworkTableInstance.getDefault().getTable("limelight-back");
   private DriveTrain drive;
-  private ProfiledPIDController pid = new ProfiledPIDController(0, 0, 0, new Constraints(0.1,0.1));
-  private ShuffleboardTab tab = Shuffleboard.getTab("PID");
-  private GenericEntry p = tab.add("Rotate P",0).getEntry();
-  private GenericEntry i = tab.add("Rotate I",0).getEntry();
-  private GenericEntry d = tab.add("Rotate D",0).getEntry();
-  private GenericEntry maxSpeedEntry = tab.add("Max Rotation Speed",0).getEntry();
-  private GenericEntry maxAccelEntry = tab.add("Max Rotation Accel",0).getEntry();
+  private ProfiledPIDController pid = new ProfiledPIDController(0.3819718634*Math.PI/180, 0, 0, new Constraints(0.3, 0.1));
+  private double minInput = 0.07;
   public LimelightCommand(DriveTrain drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drive = drive;
@@ -45,8 +35,6 @@ public class LimelightCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pid.setPID(p.getDouble(0), i.getDouble(0), d.getDouble(0));
-    pid.setConstraints(new Constraints(maxSpeedEntry.getDouble(0), maxAccelEntry.getDouble(0)));
     if(OperatorConstants.armSetPoint == SetPoints.PlaceHigh){
       //Align High
       if(SetPoints.cubeMode){
@@ -60,7 +48,7 @@ public class LimelightCommand extends CommandBase {
           limelightFront.getEntry("pipeline").setDouble(3);
         }else{
           double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          speed = Math.copySign(Math.max(Math.abs(speed),minInput),speed);
           drive.tankdrive(-speed, speed);
         }
       }
@@ -78,7 +66,7 @@ public class LimelightCommand extends CommandBase {
           limelightFront.getEntry("pipeline").setDouble(4);
         }else{
           double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          speed = Math.copySign(Math.max(Math.abs(speed),minInput),speed);
           drive.tankdrive(-speed, speed);
         }
       }
@@ -91,7 +79,7 @@ public class LimelightCommand extends CommandBase {
           limelightFront.getEntry("pipeline").setDouble(1);
         }else{
           double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          speed = Math.copySign(Math.max(Math.abs(speed),minInput),speed);
           drive.tankdrive(-speed, speed);
         }
       }else{
@@ -100,7 +88,7 @@ public class LimelightCommand extends CommandBase {
           limelightFront.getEntry("pipeline").setDouble(2);
         }else{
           double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          speed = Math.copySign(Math.max(Math.abs(speed),minInput),speed);
           drive.tankdrive(-speed, speed);
         }
       }
@@ -121,7 +109,7 @@ public class LimelightCommand extends CommandBase {
           limelightFront.getEntry("pipeline").setDouble(1);
         }else{
           double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          speed = Math.copySign(Math.max(Math.abs(speed),minInput),speed);
           drive.tankdrive(-speed, speed);
         }
       }else{
@@ -130,7 +118,7 @@ public class LimelightCommand extends CommandBase {
           limelightFront.getEntry("pipeline").setDouble(2);
         }else{
           double speed = pid.calculate(limelightFront.getEntry("tx").getDouble(0));
-          speed = Math.copySign(Math.min(Math.abs(speed),maxSpeedEntry.getDouble(0)), speed);
+          speed = Math.copySign(Math.max(Math.abs(speed),minInput),speed);
           drive.tankdrive(-speed, speed);
         }
       }

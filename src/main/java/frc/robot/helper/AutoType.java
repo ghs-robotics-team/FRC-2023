@@ -1,7 +1,7 @@
 package frc.robot.helper;
 
 public enum AutoType{
-    Top(0),
+    BASIC(0),
     Middle(1),
     Bottom(2);
     public int id;

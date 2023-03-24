@@ -17,7 +17,7 @@ import frc.robot.subsystems.ArmShoulder;
 public class ArmShoulderCommand extends CommandBase {
   /** Creates a new ArmPivotCommand. */
   private ShuffleboardTab tab = Shuffleboard.getTab("PID");
-  private GenericEntry p = tab.add("Shoulder P",7).getEntry();
+  private GenericEntry p = tab.add("Shoulder P",6).getEntry();
   private GenericEntry i = tab.add("Shoulder I",0).getEntry();
   private GenericEntry d = tab.add("Shoulder D",0).getEntry();
   private GenericEntry maxSpeedEntry = tab.add("Max Speed",0.6).getEntry();
@@ -52,13 +52,15 @@ public class ArmShoulderCommand extends CommandBase {
     double targetPos = OperatorConstants.ShoulderTargetAngle;
     double speed = pid.calculate(subsystem.getPos()/angleToTickFactor, targetPos);
     subsystem.setSpeed(Math.max(Math.min(speed,maxSpeed),-maxSpeed));
-    if(Math.abs(targetPos-subsystem.getPos()/angleToTickFactor) < 2*Math.PI/360){
+    if(Math.abs(targetPos-subsystem.getPos()/angleToTickFactor) < 1*Math.PI/180){
       OperatorConstants.ShoulderCorrect = true;
     }else{
       OperatorConstants.ShoulderCorrect = false;
     }
     SmartDashboard.putNumber("Shoulder Target", targetPos);
     SmartDashboard.putNumber("Shoulder Position", subsystem.getPos()/angleToTickFactor);
+    SmartDashboard.putNumber("Shoulder MOE",Math.abs(targetPos-subsystem.getPos()/angleToTickFactor)*180/Math.PI);
+    SmartDashboard.putBoolean("Shoulder Correct", OperatorConstants.ShoulderCorrect);
     SmartDashboard.putNumber("Shoulder PID Speed Output", speed);
   }
 

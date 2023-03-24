@@ -8,11 +8,7 @@ import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.helper.AutoType;
@@ -25,7 +21,6 @@ import frc.robot.helper.AutoType;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private GenericEntry autoMode = Shuffleboard.getTab("AutoMenu").add("Auto Mode",1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
   private RobotContainer m_robotContainer;
 
@@ -71,6 +66,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.getDrivetrain().resetPose(new Pose2d(0,0,Rotation2d.fromDegrees(0)));
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand(AutoType.Bottom);
+    m_robotContainer.globalSetup();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -93,6 +89,7 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.setup();
+    m_robotContainer.globalSetup();
   }
 
   /** This function is called periodically during operator control. */

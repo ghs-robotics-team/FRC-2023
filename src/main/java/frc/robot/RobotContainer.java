@@ -3,30 +3,32 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import frc.robot.commands.auto.AutoMoveDistCommand;
+import frc.robot.commands.auto.AutoMoveToSetPoint;
+import frc.robot.commands.auto.AutoPickupCubeCommand;
+import frc.robot.commands.auto.AutoSetClawCommand;
+import frc.robot.commands.auto.SetCubeModeCommand;
 import frc.robot.commands.misc.ArmElbowCommand;
 import frc.robot.commands.misc.ArmShoulderCommand;
+import frc.robot.commands.misc.DriveForwardCommand;
+import frc.robot.commands.teleop.LimelightCommand;
 import frc.robot.commands.teleop.MoveArmCommand;
 import frc.robot.commands.teleop.RotateArmSimple;
 import frc.robot.commands.teleop.TankDrive;
 import frc.robot.helper.AutoType;
+import frc.robot.helper.SetPoints;
 import frc.robot.subsystems.ArmElbow;
 import frc.robot.subsystems.ArmShoulder;
 import frc.robot.subsystems.ArmBrake;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveTrain;
 
-import java.util.HashMap;
-import java.util.List;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
-
-import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -53,7 +55,9 @@ public class RobotContainer {
   private Joystick joystick_right = new Joystick(1);
   private Joystick secondarycontroller = new Joystick(2);
 
-  JoystickButton rightTrigger = new JoystickButton(joystick_right, 1);
+  private JoystickButton rightTrigger = new JoystickButton(joystick_right, 1);
+  private JoystickButton rightThumb = new JoystickButton(joystick_right, 2);
+  private JoystickButton leftThumb = new JoystickButton(joystick_left, 3);
 
   //private InverseKinematics IK = new InverseKinematics();
 
@@ -63,16 +67,66 @@ public class RobotContainer {
   private ArmElbowCommand armElbowCommand = new ArmElbowCommand(armElbow);
   private RotateArmSimple rotateArmSimple = new RotateArmSimple(armBrake, secondarycontroller);
   private TankDrive tankDrive = new TankDrive(driveTrain, joystick_left, joystick_right);
+  private DriveForwardCommand slowDriveForward = new DriveForwardCommand(driveTrain, 0.15);
+  private DriveForwardCommand fastDriveForward = new DriveForwardCommand(driveTrain, 0.6);
+  private LimelightCommand align = new LimelightCommand(driveTrain);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    SetPoints.setCubeMode(false);
+    chooser.addOption("Basic", 
+      new SequentialCommandGroup(
+        new AutoSetClawCommand(claw, false, 0), 
+        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoSetClawCommand(claw, true, 0),
+        new AutoMoveToSetPoint(SetPoints.Home)
+      )
+    );
+    chooser.setDefaultOption("Basic Cone Mobility", 
+      new SequentialCommandGroup(
+        new AutoSetClawCommand(claw, false, 0), 
+        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoSetClawCommand(claw, true, 0),
+        new AutoMoveToSetPoint(SetPoints.Home),
+        new AutoMoveDistCommand(driveTrain, Units.feetToMeters(11), -0.2, -0.2)
+      )
+    );
+    chooser.addOption("Basic Cube Mobility", 
+      new SequentialCommandGroup(
+        new SetCubeModeCommand(true),
+        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoSetClawCommand(claw, true, 0.1),
+        new AutoMoveToSetPoint(SetPoints.Home),
+        new AutoMoveDistCommand(driveTrain, Units.feetToMeters(11), -0.2, -0.2)
+      )
+    );
+    chooser.addOption("Low", 
+      new SequentialCommandGroup(
+        new AutoSetClawCommand(claw, false, 0), 
+        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoSetClawCommand(claw, true, 0),
+        new AutoMoveToSetPoint(SetPoints.GrabIntake),
+        new SetCubeModeCommand(true),
+        new AutoSetClawCommand(claw, true, -0.2),
+        new AutoMoveDistCommand(driveTrain, Units.feetToMeters(9), -0.1550212311, -0.15),
+        new AutoPickupCubeCommand(driveTrain),
+        new AutoMoveDistCommand(driveTrain, 1, -0.15, -0.15),
+        new AutoSetClawCommand(claw, true, 0),
+        new AutoMoveToSetPoint(SetPoints.Home),
+        new AutoMoveDistCommand(driveTrain, Units.feetToMeters(6.5), 0.1625362677, 0.15),
+        new AutoSetClawCommand(claw, true, 1),
+        new WaitCommand(0.5),
+        new AutoSetClawCommand(claw, true, 0)
+      )
+    );
     // chooser.setDefaultOption("Top Auto", topAuto);
     // chooser.addOption("Mid Auto", midAuto);
     // chooser.addOption("Bottom Auto", bottomAuto);
     // chooser.addOption("No Auto", new WaitCommand(15));
     // chooser.addOption("Basic Auto", basicAuto);
+    SmartDashboard.putData("Auto Choices",chooser);
   }
 
   /**
@@ -90,12 +144,18 @@ public class RobotContainer {
     // cancelling on release.
   }
 
-  public void setup(){
+  public void globalSetup(){
     armElbow.setDefaultCommand(armElbowCommand);
     armPivot.setDefaultCommand(armPivotCommand);
+  }
+
+  public void setup(){
     moveArmCommand.schedule();
     driveTrain.setDefaultCommand(tankDrive);
     rotateArmSimple.schedule();
+    rightTrigger.whileTrue(align);
+    rightThumb.whileTrue(fastDriveForward);
+    leftThumb.whileTrue(slowDriveForward);
   }
 
   /**
@@ -105,7 +165,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand(AutoType type) {
     // An example command will be run in autonomous
-    return new WaitCommand(15);
+    return chooser.getSelected();
   }
 
   public DriveTrain getDrivetrain(){

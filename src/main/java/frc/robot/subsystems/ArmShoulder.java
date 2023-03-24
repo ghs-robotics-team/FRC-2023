@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmShoulder extends SubsystemBase {
-  private CANSparkMax armSpark = new CANSparkMax(4, MotorType.kBrushless);
+  private CANSparkMax armSpark = new CANSparkMax(10, MotorType.kBrushless);
   double TWO_PI = 2*Math.PI;
   /** Creates a new ArmPivot. */
   public ArmShoulder() {

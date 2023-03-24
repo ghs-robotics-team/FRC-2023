@@ -52,13 +52,15 @@ public class ArmElbowCommand extends CommandBase {
     double targetPos = OperatorConstants.ElbowTargetAngle;
     double speed = pid.calculate(elbowSubsystem.getPos()/angleToTickFactor, targetPos);
     elbowSubsystem.setSpeed(Math.max(Math.min(speed,maxSpeed),-maxSpeed));
-    if(Math.abs(targetPos-elbowSubsystem.getPos()/angleToTickFactor) < 2*Math.PI/360){
-      OperatorConstants.ShoulderCorrect = true;
+    if(Math.abs(targetPos-elbowSubsystem.getPos()/angleToTickFactor) < 1*Math.PI/180){
+      OperatorConstants.ElbowCorrect = true;
     }else{
-      OperatorConstants.ShoulderCorrect = false;
+      OperatorConstants.ElbowCorrect = false;
     }
     SmartDashboard.putNumber("Elbow Target", targetPos);
     SmartDashboard.putNumber("Elbow Position", elbowSubsystem.getPos()/angleToTickFactor);
+    SmartDashboard.putNumber("Elbow MOE",Math.abs(targetPos-elbowSubsystem.getPos()/angleToTickFactor)*180/Math.PI);
+    SmartDashboard.putBoolean("Elbow Correct", OperatorConstants.ElbowCorrect);
     SmartDashboard.putNumber("Elbow PID Speed Output", speed);
   }
 
