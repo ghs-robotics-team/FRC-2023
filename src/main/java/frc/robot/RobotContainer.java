@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import frc.robot.commands.auto.AutoBalanceDrive;
 import frc.robot.commands.auto.AutoMoveDistCommand;
 import frc.robot.commands.auto.AutoMoveToSetPoint;
 import frc.robot.commands.auto.AutoPickupCubeCommand;
@@ -79,15 +80,24 @@ public class RobotContainer {
     chooser.addOption("Basic", 
       new SequentialCommandGroup(
         new AutoSetClawCommand(claw, false, 0), 
-        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoMoveToSetPoint(SetPoints.PlaceCubeAuto), 
         new AutoSetClawCommand(claw, true, 0),
         new AutoMoveToSetPoint(SetPoints.Home)
+      )
+    );
+    chooser.addOption("Basic Auto Balance", 
+      new SequentialCommandGroup(
+        new AutoSetClawCommand(claw, false, 0), 
+        new AutoMoveToSetPoint(SetPoints.PlaceCubeAuto), 
+        new AutoSetClawCommand(claw, true, 0),
+        new AutoMoveToSetPoint(SetPoints.Home),
+        new AutoBalanceDrive(driveTrain)
       )
     );
     chooser.setDefaultOption("Basic Cone Mobility", 
       new SequentialCommandGroup(
         new AutoSetClawCommand(claw, false, 0), 
-        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoMoveToSetPoint(SetPoints.PlaceCubeAuto), 
         new AutoSetClawCommand(claw, true, 0),
         new AutoMoveToSetPoint(SetPoints.Home),
         new AutoMoveDistCommand(driveTrain, Units.feetToMeters(11), -0.2, -0.2)
@@ -96,7 +106,7 @@ public class RobotContainer {
     chooser.addOption("Basic Cube Mobility", 
       new SequentialCommandGroup(
         new SetCubeModeCommand(true),
-        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoMoveToSetPoint(SetPoints.PlaceCubeAuto), 
         new AutoSetClawCommand(claw, true, 0.1),
         new AutoMoveToSetPoint(SetPoints.Home),
         new AutoMoveDistCommand(driveTrain, Units.feetToMeters(11), -0.2, -0.2)
@@ -105,7 +115,7 @@ public class RobotContainer {
     chooser.addOption("Low", 
       new SequentialCommandGroup(
         new AutoSetClawCommand(claw, false, 0), 
-        new AutoMoveToSetPoint(SetPoints.PlaceHigh), 
+        new AutoMoveToSetPoint(SetPoints.PlaceCubeAuto), 
         new AutoSetClawCommand(claw, true, 0),
         new AutoMoveToSetPoint(SetPoints.GrabIntake),
         new SetCubeModeCommand(true),

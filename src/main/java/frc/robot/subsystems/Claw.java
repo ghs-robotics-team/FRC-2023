@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
@@ -18,7 +19,7 @@ public class Claw extends SubsystemBase {
   private DoubleSolenoid claw = new DoubleSolenoid(6, PneumaticsModuleType.REVPH, 0, 1);
   private CANSparkMax leftMotor = new CANSparkMax(7, MotorType.kBrushless);
   private CANSparkMax rightMotor = new CANSparkMax(8, MotorType.kBrushless);
-  private double runSpeed = 0;
+  public double runSpeed = 0;
 
   /** Creates a new Claw. */
   public Claw() {
@@ -49,6 +50,11 @@ public class Claw extends SubsystemBase {
     // This method will be called once per scheduler run
     leftMotor.set(runSpeed);
     rightMotor.set(runSpeed);
+    if(runSpeed == 0){
+      SmartDashboard.putBoolean("Claw Running", false);
+    }else{
+      SmartDashboard.putBoolean("Claw Running", true);
+    }
   }
 
   }
