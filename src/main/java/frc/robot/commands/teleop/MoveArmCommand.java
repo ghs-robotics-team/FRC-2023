@@ -18,6 +18,7 @@ public class MoveArmCommand extends CommandBase {
   private boolean toggle = false;
   private boolean pressed = false;
   private double runTimer = 0;
+  private boolean toggleRun = false;
   public MoveArmCommand(Joystick secondary, Claw claw) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.secondary = secondary;
@@ -50,7 +51,7 @@ public class MoveArmCommand extends CommandBase {
       OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
     if(secondary.getPOV() == 180){
-      OperatorConstants.armSetPoint = SetPoints.GrabGround;//dpad down
+      OperatorConstants.armSetPoint = SetPoints.GrabSingle;//dpad down
       if(SetPoints.cubeMode){
         claw.run(-0.3);
       }
@@ -77,12 +78,6 @@ public class MoveArmCommand extends CommandBase {
       OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
       OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
     }
-    if(secondary.getRawButton(1)){
-      OperatorConstants.armSetPoint = SetPoints.PlaceLow;//a button
-      claw.run(0);
-      OperatorConstants.ShoulderTargetAngle = OperatorConstants.armSetPoint.getShoulderAngle();
-      OperatorConstants.ElbowTargetAngle = OperatorConstants.armSetPoint.getElbowAngle();
-    }
     if(secondary.getRawButton(3) && !toggle){
       pressed = !pressed;
       SetPoints.setCubeMode(pressed);
@@ -105,14 +100,14 @@ public class MoveArmCommand extends CommandBase {
       runTimer = 50;
       claw.run(0.1);
     }
-    if(secondary.getRawButton(6) && !pressed){
+    if(secondary.getRawButton(6) && !toggleRun){
       if(claw.runSpeed == 0){
         claw.run(-0.3);
       }else{
         claw.run(0);
       }
     }
-    pressed = secondary.getRawButton(6);
+    toggleRun = secondary.getRawButton(6);
     if(runTimer > 0){
       runTimer--;
     }else if(runTimer == 0){

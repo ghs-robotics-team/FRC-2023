@@ -1,6 +1,11 @@
 package frc.robot.helper;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoBalance {
     private BuiltInAccelerometer mRioAccel;
@@ -14,6 +19,8 @@ public class AutoBalance {
     private double singleTapTime;
     private double scoringBackUpTime;
     private double doubleTapTime;
+    private AHRS gyro = new AHRS(SPI.Port.kMXP);
+
 
     public AutoBalance() {
         mRioAccel = new BuiltInAccelerometer();
@@ -24,26 +31,27 @@ public class AutoBalance {
          * CONFIG *
          **********/
         // Speed the robot drived while scoring/approaching station, default = 0.4
-        robotSpeedFast = 0.4;
+        robotSpeedFast = 0.3;
 
+        
         // Speed the robot drives while balancing itself on the charge station.
         // Should be roughly half the fast speed, to make the robot more accurate,
         // default = 0.2
-        robotSpeedSlow = 0.2;
+        robotSpeedSlow = 0.1;
 
         // Angle where the robot knows it is on the charge station, default = 13.0
-        onChargeStationDegree = 13.0;
+        onChargeStationDegree = 10.0;
 
         // Angle where the robot can assume it is level on the charging station
         // Used for exiting the drive forward sequence as well as for auto balancing,
         // default = 6.0
-        levelDegree = 6.0;
+        levelDegree = 5.0;
 
         // Amount of time a sensor condition needs to be met before changing states in
         // seconds
         // Reduces the impact of sensor noice, but too high can make the auto run
         // slower, default = 0.2
-        debounceTime = 0.2;
+        debounceTime = 0.1;
 
         // Amount of time to drive towards to scoring target when trying to bump the
         // game piece off
@@ -55,29 +63,22 @@ public class AutoBalance {
         scoringBackUpTime = 0.2;
 
         // Amount of time to drive forward to secure the scoring of the gamepiece
-        doubleTapTime = 0.3;
+        doubleTapTime = 0.11;
 
     }
 
     public double getPitch() {
-        return Math.atan2((-mRioAccel.getX()),
-                Math.sqrt(mRioAccel.getY() * mRioAccel.getY() + mRioAccel.getZ() * mRioAccel.getZ())) * 57.3;
+        return gyro.getPitch();
     }
 
     public double getRoll() {
-        return Math.atan2(mRioAccel.getY(), mRioAccel.getZ()) * 57.3;
+        return gyro.getRoll();
     }
 
     // returns the magnititude of the robot's tilt calculated by the root of
     // pitch^2 + roll^2, used to compensate for diagonally mounted rio
     public double getTilt() {
-        double pitch = getPitch();
-        double roll = getRoll();
-        if ((pitch + roll) >= 0) {
-            return Math.sqrt(pitch * pitch + roll * roll);
-        } else {
-            return -Math.sqrt(pitch * pitch + roll * roll);
-        }
+        return Units.radiansToDegrees(getRoll());
     }
 
     public int secondsToTicks(double time) {
@@ -87,33 +88,48 @@ public class AutoBalance {
     // routine for automatically driving onto and engaging the charge station.
     // returns a value from -1.0 to 1.0, which left and right motors should be set
     // to.
-    public double autoBalanceRoutine() {
+    public double autoBalanceRoutine(double angle) {
+        SmartDashboard.putNumber("State", state);
+        SmartDashboard.putNumber("angle", angle);
+        SmartDashboard.putNumber("DebounceCount", debounceCount);
         switch (state) {
             // drive forwards to approach station, exit when tilt is detected
             case 0:
-                if (getTilt() > onChargeStationDegree) {
+                if (Math.abs(angle) > onChargeStationDegree) {
                     debounceCount++;
                 }
                 if (debounceCount > secondsToTicks(debounceTime)) {
                     state = 1;
-                    debounceCount = 0;
+                    debounceCount = 0; 
                     return robotSpeedSlow;
                 }
                 return robotSpeedFast;
-            // driving up charge station, drive slower, stopping when level
             case 1:
-                if (getTilt() < levelDegree) {
-                    debounceCount++;
-                }
-                if (debounceCount > secondsToTicks(debounceTime)) {
+                debounceCount++;
+                if(debounceCount >  secondsToTicks(1)){
                     state = 2;
                     debounceCount = 0;
                     return 0;
                 }
-                return robotSpeedSlow;
-            // on charge station, stop motors and wait for end of auto
+                return 0.3;
+            // driving up charge station, drive slower, stopping when level
             case 2:
-                if (Math.abs(getTilt()) <= levelDegree / 2) {
+                if (Math.abs(angle) < levelDegree) {
+                    debounceCount++;
+                }
+                if (debounceCount > secondsToTicks(debounceTime)) {
+                    state = 3;
+                    debounceCount = 0;
+                    return 0;
+                }
+                if(Math.abs(angle) > levelDegree){
+                    return robotSpeedSlow;
+                }else{
+                    return 0;
+                }
+            // on charge station, stop motors and wait for end of auto
+            case 3:
+                if (Math.abs(angle) <= levelDegree / 2) {
                     debounceCount++;
                 }
                 if (debounceCount > secondsToTicks(debounceTime)) {
@@ -121,12 +137,12 @@ public class AutoBalance {
                     debounceCount = 0;
                     return 0;
                 }
-                if (getTilt() >= levelDegree) {
-                    return 0.1;
-                } else if (getTilt() <= -levelDegree) {
+                if (angle >= levelDegree) {
                     return -0.1;
+                } else if (angle <= -levelDegree) {
+                    return 0.1;
                 }
-            case 3:
+            case 4:
                 return 0;
         }
         return 0;

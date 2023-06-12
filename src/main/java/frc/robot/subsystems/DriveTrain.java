@@ -27,7 +27,7 @@ public class DriveTrain extends SubsystemBase {
   private TalonFX frontRight = new TalonFX(2);
   private TalonFX backLeft = new TalonFX(1);
   private TalonFX backRight = new TalonFX(3);
-  private AHRS gyro = new AHRS(SPI.Port.kMXP);
+  public AHRS gyro = new AHRS(SPI.Port.kMXP);
   private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(20));//Might also be 10
   private DifferentialDriveOdometry odometry;
   private final Field2d field = new Field2d();
@@ -48,10 +48,10 @@ public class DriveTrain extends SubsystemBase {
     backRight.follow(frontRight);
     frontRight.setInverted(true);
     backRight.setInverted(true);
-    frontLeft.setNeutralMode(NeutralMode.Brake);
-    backLeft.setNeutralMode(NeutralMode.Brake);
-    frontRight.setNeutralMode(NeutralMode.Brake);
-    backRight.setNeutralMode(NeutralMode.Brake);
+    frontLeft.setNeutralMode(NeutralMode.Coast);
+    backLeft.setNeutralMode(NeutralMode.Coast);
+    frontRight.setNeutralMode(NeutralMode.Coast);
+    backRight.setNeutralMode(NeutralMode.Coast);
     frontLeft.setSelectedSensorPosition(0);
     frontRight.setSelectedSensorPosition(0);
     backLeft.setSelectedSensorPosition(0);
@@ -64,6 +64,7 @@ public class DriveTrain extends SubsystemBase {
     backRight.configureSlot(pid);
     backLeft.configureSlot(pid);
     odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), ticksToMeters(frontLeft), ticksToMeters(frontRight));
+    gyro.calibrate();
   }
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(velocityToMeters(frontLeft.getSelectedSensorVelocity()), velocityToMeters(frontRight.getSelectedSensorVelocity()));
@@ -83,6 +84,12 @@ public class DriveTrain extends SubsystemBase {
   }
   public void resetPose(Pose2d pose){
     odometry.resetPosition(gyro.getRotation2d(), ticksToMeters(frontLeft), ticksToMeters(frontRight), pose);
+  }
+  public void enableBrake(){
+    frontLeft.setNeutralMode(NeutralMode.Brake);
+    backLeft.setNeutralMode(NeutralMode.Brake);
+    frontRight.setNeutralMode(NeutralMode.Brake);
+    backRight.setNeutralMode(NeutralMode.Brake);
   }
   public DifferentialDriveKinematics getKinematics(){
     return kinematics;
@@ -105,5 +112,8 @@ public class DriveTrain extends SubsystemBase {
     odometry.update(gyro.getRotation2d(), ticksToMeters(frontLeft), ticksToMeters(frontRight));
     field.setRobotPose(odometry.getPoseMeters());
     SmartDashboard.putData("Field",field);
+    SmartDashboard.putNumber("Roll",gyro.getRoll());
+    SmartDashboard.putNumber("Pitch",gyro.getPitch());
+    SmartDashboard.putNumber("Yaw",gyro.getYaw());
   }
 }

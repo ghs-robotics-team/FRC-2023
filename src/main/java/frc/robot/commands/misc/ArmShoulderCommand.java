@@ -17,11 +17,11 @@ import frc.robot.subsystems.ArmShoulder;
 public class ArmShoulderCommand extends CommandBase {
   /** Creates a new ArmPivotCommand. */
   private ShuffleboardTab tab = Shuffleboard.getTab("PID");
-  private GenericEntry p = tab.add("Shoulder P",6).getEntry();
+  private GenericEntry p = tab.add("Shoulder P",4).getEntry();
   private GenericEntry i = tab.add("Shoulder I",0).getEntry();
   private GenericEntry d = tab.add("Shoulder D",0).getEntry();
-  private GenericEntry maxSpeedEntry = tab.add("Max Speed",0.6).getEntry();
-  private GenericEntry maxAccelEntry = tab.add("Max Accel",1).getEntry();
+  private GenericEntry maxSpeedEntry = tab.add("Max Speed",0.8).getEntry();
+  private GenericEntry maxAccelEntry = tab.add("Max Accel",1.2).getEntry();
   private double maxSpeed = 0.15;
   private ArmShoulder subsystem;
   private double angleToTickFactor = OperatorConstants.AngleToTickShoulder;
@@ -43,6 +43,10 @@ public class ArmShoulderCommand extends CommandBase {
   public void execute() {
     if(OperatorConstants.ShoulderTargetAngle > -0.15){
       OperatorConstants.ShoulderTargetAngle = -0.15;
+    }
+    if(OperatorConstants.StopMovingShoulder){
+      OperatorConstants.ShoulderTargetAngle = subsystem.getPos()/angleToTickFactor;
+      OperatorConstants.StopMovingShoulder = false;
     }
     pid.setConstraints(new Constraints(maxSpeed, maxAccelEntry.getDouble(0.01)));
     pid.setP(p.getDouble(0));

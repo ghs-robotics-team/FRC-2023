@@ -18,6 +18,7 @@ public class ArmShoulder extends SubsystemBase {
     armSpark.setIdleMode(IdleMode.kBrake);
     armSpark.getEncoder().setPosition(0);
     armSpark.getEncoder().setPositionConversionFactor(42);
+    armSpark.setSmartCurrentLimit(40);
   }
 
   public double getPos(){

@@ -15,6 +15,7 @@ import frc.robot.commands.misc.DriveForwardCommand;
 import frc.robot.commands.teleop.LimelightCommand;
 import frc.robot.commands.teleop.MoveArmCommand;
 import frc.robot.commands.teleop.RotateArmSimple;
+import frc.robot.commands.teleop.StopMovingArmCommand;
 import frc.robot.commands.teleop.TankDrive;
 import frc.robot.helper.AutoType;
 import frc.robot.helper.SetPoints;
@@ -59,6 +60,7 @@ public class RobotContainer {
   private JoystickButton rightTrigger = new JoystickButton(joystick_right, 1);
   private JoystickButton rightThumb = new JoystickButton(joystick_right, 2);
   private JoystickButton leftThumb = new JoystickButton(joystick_left, 3);
+  private JoystickButton a = new JoystickButton(secondarycontroller, 1);
 
   //private InverseKinematics IK = new InverseKinematics();
 
@@ -94,6 +96,7 @@ public class RobotContainer {
         new AutoBalanceDrive(driveTrain)
       )
     );
+    chooser.addOption("Only Balance", new AutoBalanceDrive(driveTrain));
     chooser.setDefaultOption("Basic Cone Mobility", 
       new SequentialCommandGroup(
         new AutoSetClawCommand(claw, false, 0), 
@@ -157,6 +160,7 @@ public class RobotContainer {
   public void globalSetup(){
     armElbow.setDefaultCommand(armElbowCommand);
     armPivot.setDefaultCommand(armPivotCommand);
+    driveTrain.enableBrake();
   }
 
   public void setup(){
@@ -166,6 +170,7 @@ public class RobotContainer {
     rightTrigger.whileTrue(align);
     rightThumb.whileTrue(fastDriveForward);
     leftThumb.whileTrue(slowDriveForward);
+    a.onTrue(new StopMovingArmCommand());
   }
 
   /**

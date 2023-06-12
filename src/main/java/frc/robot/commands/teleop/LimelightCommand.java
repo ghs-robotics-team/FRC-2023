@@ -71,7 +71,7 @@ public class LimelightCommand extends CommandBase {
         }
       }
     }
-    if(OperatorConstants.armSetPoint == SetPoints.GrabGround){
+    if(OperatorConstants.armSetPoint == SetPoints.GrabSingle){
       //Align Grab Ground Front
       if(SetPoints.cubeMode){
         //Front Cube
